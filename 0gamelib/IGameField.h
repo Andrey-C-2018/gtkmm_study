@@ -1,23 +1,21 @@
 #pragma once
+#include <memory>
 #include <gdkmm/color.h>
+
+struct IGameEventsHandler;
 
 struct IGameField {
 
-	void initScreen(int cols, int rows, Gdk::Color def_color);
-	void setCellColor(int col, int row, Gdk::Color color);
-	void setCellText(int col, int row, const char *text);
-	
-	void onMouseLButtonClick(int col, int row);
-	void onMouseWheelClick(int col, int row);
-	void onMouseRButtonClick(int col, int row);
-	
-	void onKeyPress(char ch);
-	void onKeyReleased(char ch);
-	
-	void setTimer(unsigned duration);
-	void onTimer();
-	void stopTimer();
+	virtual void initScreen(size_t cols, size_t rows, Gdk::Color def_color, \
+							std::unique_ptr<IGameEventsHandler> evt_handler) = 0;
+	virtual void setCellColor(size_t col, size_t row, Gdk::Color color) = 0;
+	virtual void setCellText(size_t col, size_t row, const char *text) = 0;
 
-	void redraw();
-	void reset(Gdk::Color color);
+	virtual void setTimer(unsigned duration) = 0;
+	virtual void stopTimer() = 0;
+
+	virtual void redraw() = 0;
+	virtual void reset(Gdk::Color color) = 0;
+
+	virtual ~IGameField() { }
 };

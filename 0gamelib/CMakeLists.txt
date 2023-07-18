@@ -26,6 +26,6 @@ if(NOT MSVC OR MSVC_TOOLSET_VERSION LESS_EQUAL 80)
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE})
 endif()
 
-add_library(gamelib GameField.cpp GameField.h)
+add_library(gamelib GameField.cpp GameField.h GameField.cpp IGameEventsHandler.h)
 set_target_properties(gamelib PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 target_include_directories(gamelib PUBLIC ${GTKMM3_INCLUDE_DIRS})
