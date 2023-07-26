@@ -7,7 +7,7 @@
 
 class GameField : public Gtk::DrawingArea, public IGameField {
 	struct CellProperties {
-		Gdk::Color color;
+		Color color;
 		std::string text;
 	};
 
@@ -29,16 +29,16 @@ public:
 	GameField &operator=(const GameField &obj) = delete;
 	GameField &operator=(GameField &&obj) = default;
 
-	void initScreen(size_t cols, size_t rows, Gdk::Color def_color, \
+	void init(size_t cols, size_t rows, Color def_color, \
 					std::unique_ptr<IGameEventsHandler> evt_handler) override;
-	void setCellColor(size_t col, size_t row, Gdk::Color color) override;
+	void setCellColor(size_t col, size_t row, Color color) override;
 	void setCellText(size_t col, size_t row, const char *text) override;
 
 	void setTimer(unsigned duration) override;
 	void stopTimer() override;
 
 	void redraw() override;
-	void reset(Gdk::Color color) override;
+	void reset(Color color) override;
 
 	virtual ~GameField();
 };

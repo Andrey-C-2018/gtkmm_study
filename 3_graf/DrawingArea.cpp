@@ -22,9 +22,10 @@ bool DrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     cr->line_to(0, height);
     cr->move_to(xc, yc);
     cr->line_to(width, yc);
+	cr->rectangle(0, 0, xc, yc);
     cr->stroke();
 
-    return true;
+	return true;
 }
 
 DrawingArea::~DrawingArea() { }

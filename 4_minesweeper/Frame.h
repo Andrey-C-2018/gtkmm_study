@@ -1,10 +1,10 @@
 #pragma once
 #include <gtkmm/window.h>
 #include <gtkmm/button.h>
-#include "DrawingArea.h"
+#include <_gamelib/GameField.h>
 
 class Frame : public Gtk::Window {
-	DrawingArea area;
+	GameField field;
 
 public:
     Frame();

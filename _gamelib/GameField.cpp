@@ -4,7 +4,7 @@
 
 GameField::GameField() :is_initialized(false), cols(0), rows(0) { }
 
-void GameField::initScreen(size_t cols_, size_t rows_, Gdk::Color def_color, \
+void GameField::init(size_t cols_, size_t rows_, Color def_color, \
 						   std::unique_ptr<IGameEventsHandler> evt_handler_) {
 
 	assert(cols_);
@@ -23,7 +23,7 @@ void GameField::initScreen(size_t cols_, size_t rows_, Gdk::Color def_color, \
 	cells.insert(cells.begin(), rows, row);
 }
 
-void GameField::setCellColor(size_t col, size_t row, Gdk::Color color) {
+void GameField::setCellColor(size_t col, size_t row, Color color) {
 
 	assert (col < cols);
 	assert (row < rows);
@@ -59,7 +59,7 @@ void GameField::redraw() {
 	}
 }
 
-void GameField::reset(Gdk::Color color) {
+void GameField::reset(Color color) {
 
 	for (auto& cells_row : cells) {
 		for (auto &cell_props: cells_row) {
@@ -81,11 +81,14 @@ bool GameField::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
 	for (size_t i = 0; i < cells.size(); i++) {
 		for (size_t j = 0; j < cells[i].size(); j++) {
 			CellProperties &cell_props = cells[i][j];
-			Gdk::Color &c = cell_props.color;
+			Color &c = cell_props.color;
 
-			cr->set_source_rgb(c.get_red_p(), c.get_green_p(), c.get_blue_p());
+			cr->set_source_rgb(c.getRed() / 255.0,
+							   c.getGreen() / 255.0,
+							   c.getBlue() / 255.0);
 			cr->rectangle(cell_width * (double)j, cell_height * (double)i,
 						  cell_width, cell_height);
+			cr->stroke();
 		}
 	}
 	return true;

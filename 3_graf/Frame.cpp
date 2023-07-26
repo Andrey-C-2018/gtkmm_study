@@ -6,7 +6,7 @@ Frame::Frame() {
     set_border_width(10);
     set_title("Drawing test");
 
-    add(area);
+	add(area);
     area.show();
 }
 
