@@ -1,7 +1,11 @@
 #include <cassert>
 #include "GameScreen.h"
 
-GameScreen::GameScreen() : cols(0), rows(0) { }
+GameScreen::GameScreen(Gtk::DrawingArea *parent_) : \
+						parent(parent_), cols(0), rows(0) {
+
+	assert(parent);
+}
 
 void GameScreen::setSize(size_t cols_, size_t rows_, Color def_color) {
 
@@ -52,15 +56,39 @@ bool GameScreen::draw(const DrawingContext &cr, \
 			CellProperties &cell_props = cells[i][j];
 			Color &c = cell_props.color;
 
+			cr->save();
 			cr->set_source_rgb(c.getRed() / 255.0,
 							   c.getGreen() / 255.0,
 							   c.getBlue() / 255.0);
-			cr->rectangle(cell_width * (double)j, cell_height * (double)i,
+			cr->rectangle(cell_width * (double)j, cell_height * (double)i, \
 						  cell_width, cell_height);
+			cr->fill_preserve();
+			cr->restore();
+			drawText(cr, cell_width * (double)j + cell_width / 2.0, \
+						cell_height * (double)i + cell_height / 2.0, \
+						cell_props.text.c_str());
 			cr->stroke();
 		}
 	}
 	return true;
+}
+
+void GameScreen::drawText(const DrawingContext &cr, \
+							double x, double y, const char *text) {
+
+	Pango::FontDescription font;
+	font.set_family("Monospace");
+	font.set_weight(Pango::WEIGHT_BOLD);
+
+	auto layout = parent->create_pango_layout(text);
+	layout->set_font_description(font);
+
+	int text_width;
+	int text_height;
+	layout->get_pixel_size(text_width, text_height);
+
+	cr->move_to(x - text_width / 2.0, y - text_height / 2.0);
+	layout->show_in_cairo_context(cr);
 }
 
 GameScreen::~GameScreen() { }

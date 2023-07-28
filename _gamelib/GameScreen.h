@@ -11,11 +11,15 @@ class GameScreen : public IGameScreen, public IDrawable {
 		std::string text;
 	};
 
+	Gtk::DrawingArea *parent;
 	std::vector<std::vector<CellProperties>> cells;
 	size_t cols, rows;
 
+	void drawText(const DrawingContext &cr, \
+					double x, double y, const char *text);
+
 public:
-	GameScreen();
+	explicit GameScreen(Gtk::DrawingArea *parent);
 
 	GameScreen(const GameScreen &obj) = delete;
 	GameScreen(GameScreen &&obj) = default;

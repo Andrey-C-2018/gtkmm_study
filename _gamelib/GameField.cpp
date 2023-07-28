@@ -1,7 +1,7 @@
 #include <cassert>
 #include "GameField.h"
 
-GameField::GameField() { }
+GameField::GameField() : game_screen(this) { }
 
 bool GameField::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
 
