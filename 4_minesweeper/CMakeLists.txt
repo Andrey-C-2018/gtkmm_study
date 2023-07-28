@@ -14,7 +14,7 @@ if(NOT MSVC OR MSVC_TOOLSET_VERSION LESS_EQUAL 80)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE})
 endif()
 
-add_executable(minesweeper main.cpp Frame.cpp Frame.h EvtHandler.h)
+add_executable(minesweeper main.cpp MineSweeperEvtHandler.cpp MineSweeperEvtHandler.h)
 set_target_properties(minesweeper PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 
 target_include_directories(minesweeper PRIVATE ${XLIBS_ROOT_FOLDER})

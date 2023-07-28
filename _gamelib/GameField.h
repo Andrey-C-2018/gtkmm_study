@@ -1,25 +1,16 @@
 #pragma once
-#include <memory>
-#include <vector>
 #include <gtkmm/drawingarea.h>
-#include "IGameField.h"
-#include "IGameEventsHandler.h"
+#include "GameScreen.h"
 
-class GameField : public Gtk::DrawingArea, public IGameField {
-	struct CellProperties {
-		Color color;
-		std::string text;
-	};
+struct IEventsHandler;
+typedef std::unique_ptr<IEventsHandler> EvtHandlerPtr;
 
-	std::vector<std::vector<CellProperties>> cells;
-	bool is_initialized;
-	size_t cols, rows;
-	std::unique_ptr<IGameEventsHandler> evt_handler;
-	sigc::connection timer_conn;
+class GameField : public Gtk::DrawingArea {
+	GameScreen game_screen;
+	EvtHandlerPtr evt_handler;
 
 protected:
 	bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
-	bool on_timeout(int timer_number);
 
 public:
 	GameField();
@@ -29,16 +20,7 @@ public:
 	GameField &operator=(const GameField &obj) = delete;
 	GameField &operator=(GameField &&obj) = default;
 
-	void init(size_t cols, size_t rows, Color def_color, \
-					std::unique_ptr<IGameEventsHandler> evt_handler) override;
-	void setCellColor(size_t col, size_t row, Color color) override;
-	void setCellText(size_t col, size_t row, const char *text) override;
-
-	void setTimer(unsigned duration) override;
-	void stopTimer() override;
-
-	void redraw() override;
-	void reset(Color color) override;
+	void init(EvtHandlerPtr evt_handler);
 
 	virtual ~GameField();
 };
