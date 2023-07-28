@@ -31,6 +31,7 @@ public:
 	void setCellText(size_t col, size_t row, const char *text) override;
 	bool draw(const DrawingContext &cr, \
 				int screen_width, int screen_height) override;
+	void redraw() override;
 	void reset(Color color) override;
 
 	virtual ~GameScreen();

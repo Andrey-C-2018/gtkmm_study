@@ -1,8 +1,7 @@
 #pragma once
-#include <_gamelib/IEventsHandler.h>
-#include <_gamelib/IGameScreen.h>
+#include <tiled/IEventsHandler.h>
 
-class MineSweeperEvtHandler : public IEventsHandler {
+class MineSweeper : public IEventsHandler {
 public:
 	void onInit(IGameScreen &screen) override;
 	void onMouseLButtonClick(IGameScreen &screen, size_t col, size_t row) override;

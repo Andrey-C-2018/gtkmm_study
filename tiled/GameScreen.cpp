@@ -91,4 +91,9 @@ void GameScreen::drawText(const DrawingContext &cr, \
 	layout->show_in_cairo_context(cr);
 }
 
+void GameScreen::redraw() {
+
+	parent->queue_draw();
+}
+
 GameScreen::~GameScreen() { }

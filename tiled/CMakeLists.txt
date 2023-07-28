@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(gamelib VERSION 0.2 LANGUAGES CXX)
+project(tiled VERSION 0.3 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
        set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -37,12 +37,12 @@ message(STATUS "gtkmm include path: ${GTKMM3_INCLUDE_DIRS}")
 
 #######################################
 
-add_library(gamelib GameMainWnd.cpp GameMainWnd.h
+add_library(tiled GameMainWnd.cpp GameMainWnd.h
 		GameField.cpp GameField.h
 		GameScreen.cpp GameScreen.h
         IGameScreen.h
 		IEventsHandler.h
 		IDrawable.h
 		Color.h Color.cpp)
-set_target_properties(gamelib PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
-target_include_directories(gamelib PUBLIC ${GTKMM3_INCLUDE_DIRS})
+set_target_properties(tiled PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
+target_include_directories(tiled PUBLIC ${GTKMM3_INCLUDE_DIRS})
