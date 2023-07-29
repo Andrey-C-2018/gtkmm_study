@@ -3,7 +3,9 @@
 
 GameField::GameField() : game_screen(this) {
 
-	add_events(Gdk::BUTTON_PRESS_MASK);
+	add_events(Gdk::BUTTON_PRESS_MASK | \
+						Gdk::KEY_PRESS_MASK | Gdk::KEY_RELEASE_MASK);
+	set_can_focus(true);
 }
 
 bool GameField::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
@@ -36,6 +38,20 @@ bool GameField::on_button_press_event(GdkEventButton *event) {
 			evt_handler->onMouseRButtonClick(game_screen, 1, 1);
 	}
 
+	return true;
+}
+
+bool GameField::on_key_press_event(GdkEventKey *event) {
+
+	assert (event->type == GDK_KEY_PRESS);
+	evt_handler->onKeyPress(game_screen, (char)event->keyval);
+	return true;
+}
+
+bool GameField::on_key_release_event(GdkEventKey *event) {
+
+	assert (event->type == GDK_KEY_RELEASE);
+	evt_handler->onKeyReleased(game_screen, (char)event->keyval);
 	return true;
 }
 

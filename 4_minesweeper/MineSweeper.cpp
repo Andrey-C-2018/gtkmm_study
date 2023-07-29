@@ -27,6 +27,9 @@ void MineSweeper::onMouseRButtonClick(IGameScreen &screen, size_t col, size_t ro
 
 void MineSweeper::onKeyPress(IGameScreen &screen, char ch) {
 
+	char str[] = {ch, 0};
+	screen.setCellText(2, 2, str);
+	screen.redraw();
 }
 
 void MineSweeper::onKeyReleased(IGameScreen &screen, char ch) {
