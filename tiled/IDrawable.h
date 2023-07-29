@@ -5,6 +5,5 @@ typedef Cairo::RefPtr<Cairo::Context> DrawingContext;
 
 struct IDrawable {
 
-	virtual bool draw(const DrawingContext &cr, \
-						int screen_width, int screen_height) = 0;
+	virtual bool draw(const DrawingContext &cr) = 0;
 };

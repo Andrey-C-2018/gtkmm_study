@@ -2,9 +2,33 @@
 #include "GameScreen.h"
 
 GameScreen::GameScreen(Gtk::DrawingArea *parent_) : \
-						parent(parent_), cols(0), rows(0) {
+						parent(parent_), cell_width(0), cell_height(0), \
+						cols(0), rows(0) {
 
 	assert(parent);
+	screenSizeChanged(parent->get_allocation());
+}
+
+void GameScreen::screenSizeChanged(const Gtk::Allocation &allocation) {
+
+	int width = allocation.get_width();
+	int height = allocation.get_height();
+	cell_width = cols != 0 ? width / (int)cols : 0;
+	cell_height = rows != 0 ? height / (int)rows : 0;
+}
+
+size_t GameScreen::getColByXCoord(gdouble x) const {
+
+	auto col = (size_t) (x / (gdouble)cell_width);
+	assert (col < cols);
+	return col;
+}
+
+size_t GameScreen::getRowByYCoord(gdouble y) const {
+
+	auto row = (size_t) (y / (gdouble)cell_height);
+	assert (row < rows);
+	return row;
 }
 
 void GameScreen::setSize(size_t cols_, size_t rows_, Color def_color) {
@@ -17,6 +41,7 @@ void GameScreen::setSize(size_t cols_, size_t rows_, Color def_color) {
 	CellProperties cell_props{def_color, ""};
 	std::vector<CellProperties> row(cols, cell_props);
 	cells.insert(cells.begin(), rows, row);
+	screenSizeChanged(parent->get_allocation());
 }
 
 void GameScreen::setCellColor(size_t col, size_t row, Color color) {
@@ -43,14 +68,9 @@ void GameScreen::reset(Color color) {
 	}
 }
 
-bool GameScreen::draw(const DrawingContext &cr, \
-						int screen_width, int screen_height) {
+bool GameScreen::draw(const DrawingContext &cr) {
 
-	size_t cols_count = cells.empty() ? 1 : cells[0].size();
-	size_t rows_count = cells.empty() ? 1 : cells.size();
-	const double cell_width = screen_width / (double) cols_count;
-	const double cell_height = screen_height / (double) rows_count;
-
+	screenSizeChanged(parent->get_allocation());
 	for (size_t i = 0; i < cells.size(); i++) {
 		for (size_t j = 0; j < cells[i].size(); j++) {
 			CellProperties &cell_props = cells[i][j];
