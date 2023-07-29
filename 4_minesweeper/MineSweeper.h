@@ -15,8 +15,10 @@ class MineSweeper : public IEventsHandler {
 		size_t mined_neighbours;
 	};
 	Cell cells[COLS][ROWS]{};
-	std::vector<Cell*> &getNeighbours(size_t col, size_t row, \
-										std::vector<Cell*> &neighbours);
+
+	void openCell(IGameScreen &screen, size_t col, size_t row);
+	size_t getNeighbours(size_t col, size_t row, Cell *neighbours[8]);
+	std::pair<size_t, size_t> getCellLocation(const Cell *cell) const;
 	void boom(IGameScreen &screen, size_t col, size_t row);
 
 public:
