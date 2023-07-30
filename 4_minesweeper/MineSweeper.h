@@ -25,9 +25,12 @@ public:
 	MineSweeper();
 
 	void onInit(IGameScreen &screen) override;
-	void onMouseLButtonClick(IGameScreen &screen, size_t col, size_t row) override;
-	void onMouseWheelClick(IGameScreen &screen, size_t col, size_t row) override;
-	void onMouseRButtonClick(IGameScreen &screen, size_t col, size_t row) override;
+	void onMouseLButtonDown(IGameScreen &screen, size_t col, size_t row) override;
+	void onMouseLButtonUp(IGameScreen &screen, size_t col, size_t row) override;
+	void onMouseWheelDown(IGameScreen &screen, size_t col, size_t row) override;
+	void onMouseWheelUp(IGameScreen &screen, size_t col, size_t row) override;
+	void onMouseRButtonDown(IGameScreen &screen, size_t col, size_t row) override;
+	void onMouseRButtonUp(IGameScreen &screen, size_t col, size_t row) override;
 	void onKeyPress(IGameScreen &screen, char ch) override;
 	void onKeyReleased(IGameScreen &screen, char ch) override;
 

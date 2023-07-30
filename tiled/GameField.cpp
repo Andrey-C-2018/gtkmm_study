@@ -30,17 +30,37 @@ bool GameField::on_button_press_event(GdkEventButton *event) {
 
 		switch (event->button) {
 			case 1:
-				evt_handler->onMouseLButtonClick(game_screen, col, row);
+				evt_handler->onMouseLButtonDown(game_screen, col, row);
 				break;
 			case 2:
-				evt_handler->onMouseWheelClick(game_screen, col, row);
+				evt_handler->onMouseWheelDown(game_screen, col, row);
 				break;
 			case 3:
-				evt_handler->onMouseRButtonClick(game_screen, col, row);
+				evt_handler->onMouseRButtonDown(game_screen, col, row);
 		}
 		return true;
 	}
 	return false;
+}
+
+bool GameField::on_button_release_event(GdkEventButton *event) {
+
+	assert (event->type == GDK_BUTTON_RELEASE);
+	game_screen.screenSizeChanged(get_allocation());
+	size_t col = game_screen.getColByXCoord(event->x);
+	size_t row = game_screen.getRowByYCoord(event->y);
+
+	switch (event->button) {
+		case 1:
+			evt_handler->onMouseLButtonUp(game_screen, col, row);
+			break;
+		case 2:
+			evt_handler->onMouseWheelUp(game_screen, col, row);
+			break;
+		case 3:
+			evt_handler->onMouseRButtonUp(game_screen, col, row);
+	}
+	return true;
 }
 
 bool GameField::on_key_press_event(GdkEventKey *event) {

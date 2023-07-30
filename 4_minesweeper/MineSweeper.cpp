@@ -9,7 +9,7 @@ MineSweeper::MineSweeper() : \
 		INITIAL(100, 100, 100), \
 		OPENED(0, 0xff, 0), \
 		MINED(0xff, 0, 0), \
-		MARKED(0, 0xff, 0xff) {
+		MARKED(0xff, 0xff, 0) {
 
 	Cell ordinary{false, false, false};
 	std::fill(&cells[0][0], &cells[0][0] + COLS * ROWS, ordinary);
@@ -95,15 +95,31 @@ void MineSweeper::boom(IGameScreen &screen, size_t col, size_t row) {
 	screen.setCellText(col, row, "M");
 }
 
-void MineSweeper::onMouseLButtonClick(IGameScreen &screen, size_t col, size_t row) {
+void MineSweeper::onMouseLButtonDown(IGameScreen &screen, size_t col, size_t row) {
 
 	openCell(screen, col, row);
 	screen.redraw();
 }
 
-void MineSweeper::onMouseWheelClick(IGameScreen &screen, size_t col, size_t row) { }
+void MineSweeper::onMouseLButtonUp(IGameScreen &screen, size_t col, size_t row) { }
 
-void MineSweeper::onMouseRButtonClick(IGameScreen &screen, size_t col, size_t row) {
+void MineSweeper::onMouseWheelDown(IGameScreen &screen, size_t col, size_t row) {
+
+	Cell &cell = cells[col][row];
+	if(!(!cell.is_mined && cell.is_open && cell.mined_neighbours > 0)) return;
+
+	Cell *neighbours[8];
+	size_t count = getNeighbours(col, row, neighbours);
+	for(int i = 0; i < count; ++i) {
+		auto location = getCellLocation(neighbours[i]);
+		openCell(screen, location.first, location.second);
+	}
+	screen.redraw();
+}
+
+void MineSweeper::onMouseWheelUp(IGameScreen &screen, size_t col, size_t row) { }
+
+void MineSweeper::onMouseRButtonDown(IGameScreen &screen, size_t col, size_t row) {
 
 	Cell &cell = cells[col][row];
 	if (cell.is_open) return;
@@ -119,6 +135,8 @@ void MineSweeper::onMouseRButtonClick(IGameScreen &screen, size_t col, size_t ro
 	cell.is_marked = !cell.is_marked;
 	screen.redraw();
 }
+
+void MineSweeper::onMouseRButtonUp(IGameScreen &screen, size_t col, size_t row) { }
 
 void MineSweeper::onKeyPress(IGameScreen &screen, char ch) { }
 

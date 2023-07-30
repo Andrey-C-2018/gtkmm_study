@@ -6,7 +6,7 @@ class GameMainWnd : public Gtk::Window {
 	GameField field;
 
 public:
-	GameMainWnd();
+	GameMainWnd(const char *title, int width, int height);
 
 	GameMainWnd(const GameMainWnd &obj) = delete;
 	GameMainWnd(GameMainWnd &&obj) = default;
