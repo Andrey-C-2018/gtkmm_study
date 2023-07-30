@@ -9,7 +9,8 @@ MineSweeper::MineSweeper() : \
 		INITIAL(100, 100, 100), \
 		OPENED(0, 0xff, 0), \
 		MINED(0xff, 0, 0), \
-		MARKED(0xff, 0xff, 0) {
+		MARKED(0xff, 0xff, 0),
+		game_over(false) {
 
 	Cell ordinary{false, false, false};
 	std::fill(&cells[0][0], &cells[0][0] + COLS * ROWS, ordinary);
@@ -21,12 +22,13 @@ MineSweeper::MineSweeper() : \
 
 	Cell *neighbours[8];
 	for (size_t i = 0; i < COLS; i++)
-		for (size_t j = 0; j < ROWS; j++)
+		for (size_t j = 0; j < ROWS; j++) {
 			if (cells[i][j].is_mined) {
 				size_t count = getNeighbours(i, j, neighbours);
 				for (size_t k = 0; k < count; k++)
 					neighbours[k]->mined_neighbours++;
 			}
+		}
 }
 
 size_t MineSweeper::getNeighbours(size_t col, size_t row, \
@@ -56,7 +58,7 @@ void MineSweeper::onInit(IGameScreen &screen) {
 void MineSweeper::openCell(IGameScreen &screen, size_t col, size_t row) {
 
 	Cell &cell = cells[col][row];
-	if (cell.is_open || cell.is_marked) return;
+	if (game_over || cell.is_open || cell.is_marked) return;
 	cell.is_open = true;
 
 	if (cell.is_mined) {
@@ -91,6 +93,7 @@ std::pair<size_t, size_t> MineSweeper::getCellLocation(const Cell *cell) const {
 
 void MineSweeper::boom(IGameScreen &screen, size_t col, size_t row) {
 
+	game_over = true;
 	screen.setCellColor(col, row, MINED);
 	screen.setCellText(col, row, "M");
 }
@@ -106,7 +109,8 @@ void MineSweeper::onMouseLButtonUp(IGameScreen &screen, size_t col, size_t row) 
 void MineSweeper::onMouseWheelDown(IGameScreen &screen, size_t col, size_t row) {
 
 	Cell &cell = cells[col][row];
-	if(!(!cell.is_mined && cell.is_open && cell.mined_neighbours > 0)) return;
+	if(game_over || \
+		!(!cell.is_mined && cell.is_open && cell.mined_neighbours > 0)) return;
 
 	Cell *neighbours[8];
 	size_t count = getNeighbours(col, row, neighbours);
@@ -122,7 +126,7 @@ void MineSweeper::onMouseWheelUp(IGameScreen &screen, size_t col, size_t row) { 
 void MineSweeper::onMouseRButtonDown(IGameScreen &screen, size_t col, size_t row) {
 
 	Cell &cell = cells[col][row];
-	if (cell.is_open) return;
+	if (game_over || cell.is_open) return;
 
 	if (cell.is_marked) {
 		screen.setCellColor(col, row, INITIAL);

@@ -15,6 +15,7 @@ class MineSweeper : public IEventsHandler {
 		size_t mined_neighbours;
 	};
 	Cell cells[COLS][ROWS]{};
+	bool game_over;
 
 	void openCell(IGameScreen &screen, size_t col, size_t row);
 	size_t getNeighbours(size_t col, size_t row, Cell *neighbours[8]);
