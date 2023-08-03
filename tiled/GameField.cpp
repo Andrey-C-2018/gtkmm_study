@@ -17,7 +17,7 @@ void GameField::init(EvtHandlerPtr evt_handler_) {
 
 	assert(evt_handler_);
 	assert(!evt_handler);
-	evt_handler = std::move(evt_handler_);
+	evt_handler = evt_handler_;
 	evt_handler->onInit(game_screen);
 }
 
@@ -30,13 +30,13 @@ bool GameField::on_button_press_event(GdkEventButton *event) {
 
 		switch (event->button) {
 			case 1:
-				evt_handler->onMouseLButtonDown(game_screen, col, row);
+				evt_handler->onMouseLButtonDown(col, row);
 				break;
 			case 2:
-				evt_handler->onMouseWheelDown(game_screen, col, row);
+				evt_handler->onMouseWheelDown(col, row);
 				break;
 			case 3:
-				evt_handler->onMouseRButtonDown(game_screen, col, row);
+				evt_handler->onMouseRButtonDown(col, row);
 		}
 		return true;
 	}
@@ -52,13 +52,13 @@ bool GameField::on_button_release_event(GdkEventButton *event) {
 
 	switch (event->button) {
 		case 1:
-			evt_handler->onMouseLButtonUp(game_screen, col, row);
+			evt_handler->onMouseLButtonUp(col, row);
 			break;
 		case 2:
-			evt_handler->onMouseWheelUp(game_screen, col, row);
+			evt_handler->onMouseWheelUp(col, row);
 			break;
 		case 3:
-			evt_handler->onMouseRButtonUp(game_screen, col, row);
+			evt_handler->onMouseRButtonUp(col, row);
 	}
 	return true;
 }
@@ -66,14 +66,14 @@ bool GameField::on_button_release_event(GdkEventButton *event) {
 bool GameField::on_key_press_event(GdkEventKey *event) {
 
 	assert (event->type == GDK_KEY_PRESS);
-	evt_handler->onKeyPress(game_screen, (char)event->keyval);
+	evt_handler->onKeyPress((char)event->keyval);
 	return true;
 }
 
 bool GameField::on_key_release_event(GdkEventKey *event) {
 
 	assert (event->type == GDK_KEY_RELEASE);
-	evt_handler->onKeyReleased(game_screen, (char)event->keyval);
+	evt_handler->onKeyReleased((char)event->keyval);
 	return true;
 }
 

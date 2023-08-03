@@ -3,7 +3,7 @@
 #include "GameScreen.h"
 
 struct IEventsHandler;
-typedef std::unique_ptr<IEventsHandler> EvtHandlerPtr;
+typedef std::shared_ptr<IEventsHandler> EvtHandlerPtr;
 
 class GameField : public Gtk::DrawingArea {
 	GameScreen game_screen;

@@ -17,25 +17,29 @@ class MineSweeper : public IEventsHandler {
 	Cell cells[COLS][ROWS]{};
 	size_t closed_cells_count, flags_count;
 	bool game_over;
+	IGameScreen *screen;
 
+	void resetCells();
 	void fillMinedNeighboursCounts();
-	void openCell(IGameScreen &screen, size_t col, size_t row);
+	void openCell(size_t col, size_t row);
 	size_t getNeighbours(size_t col, size_t row, Cell *neighbours[8]);
 	std::pair<size_t, size_t> getCellLocation(const Cell *cell) const;
-	void boom(IGameScreen &screen, size_t col, size_t row);
+	void boom(size_t col, size_t row);
 
 public:
 	MineSweeper();
 
 	void onInit(IGameScreen &screen) override;
-	void onMouseLButtonDown(IGameScreen &screen, size_t col, size_t row) override;
-	void onMouseLButtonUp(IGameScreen &screen, size_t col, size_t row) override { }
-	void onMouseWheelDown(IGameScreen &screen, size_t col, size_t row) override;
-	void onMouseWheelUp(IGameScreen &screen, size_t col, size_t row) override { }
-	void onMouseRButtonDown(IGameScreen &screen, size_t col, size_t row) override;
-	void onMouseRButtonUp(IGameScreen &screen, size_t col, size_t row) override { }
-	void onKeyPress(IGameScreen &screen, char ch) override { }
-	void onKeyReleased(IGameScreen &screen, char ch) override { }
+	void onMouseLButtonDown(size_t col, size_t row) override;
+	void onMouseLButtonUp(size_t col, size_t row) override { }
+	void onMouseWheelDown(size_t col, size_t row) override;
+	void onMouseWheelUp(size_t col, size_t row) override { }
+	void onMouseRButtonDown(size_t col, size_t row) override;
+	void onMouseRButtonUp(size_t col, size_t row) override { }
+	void onKeyPress(char ch) override { }
+	void onKeyReleased(char ch) override { }
+
+	void reset();
 
 	virtual ~MineSweeper();
 };

@@ -37,12 +37,11 @@ message(STATUS "gtkmm include path: ${GTKMM3_INCLUDE_DIRS}")
 
 #######################################
 
-add_library(tiled GameMainWnd.cpp GameMainWnd.h
-		GameField.cpp GameField.h
+add_library(tiled GameField.cpp GameField.h
 		GameScreen.cpp GameScreen.h
         IGameScreen.h
 		IEventsHandler.h
 		IDrawable.h
-		Color.h Color.cpp Screens.cpp Screens.h MessageBox.cpp MessageBox.h)
+		Color.h Color.cpp MessageBox.cpp MessageBox.h)
 set_target_properties(tiled PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 target_include_directories(tiled PUBLIC ${GTKMM3_INCLUDE_DIRS})
