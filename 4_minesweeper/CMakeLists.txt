@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(minesweeper VERSION 0.6 LANGUAGES CXX)
+project(minesweeper VERSION 0.7 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -15,7 +15,9 @@ if(NOT MSVC OR MSVC_TOOLSET_VERSION LESS_EQUAL 80)
 endif()
 
 add_executable(minesweeper main.cpp MainWnd.cpp MainWnd.h
-        MineSweeper.cpp MineSweeper.h IMessenger.h Messenger.cpp Messenger.h)
+        MineSweeper.cpp MineSweeper.h
+        IMessenger.h
+        Messenger.cpp Messenger.h)
 set_target_properties(minesweeper PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 
 target_include_directories(minesweeper PRIVATE ${XLIBS_ROOT_FOLDER})

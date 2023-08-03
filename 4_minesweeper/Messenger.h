@@ -2,10 +2,10 @@
 #include "IMessenger.h"
 
 class Messenger : public IMessenger {
-	Gtk::Widget &output_widget;
+	Gtk::Button &output_widget;
 
 public:
-	Messenger(Gtk::Widget &output_widget);
+	Messenger(Gtk::Button &output_widget);
 
 	Messenger(const Messenger &obj) = delete;
 	Messenger(Messenger &&obj) = default;

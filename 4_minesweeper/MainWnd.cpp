@@ -2,9 +2,11 @@
 #include "MainWnd.h"
 #include "Messenger.h"
 
+const char DEF_RESET_STR[] = "Restart";
+
 MainWnd::MainWnd(const char *title, int width, int height) : \
 					vert_box(Gtk::ORIENTATION_VERTICAL, 5), \
-					restart_btn("Restart"), \
+					restart_btn(DEF_RESET_STR), \
 					mine_sweeper(std::make_shared<MineSweeper>(\
 									std::make_unique<Messenger>(restart_btn))) {
 
@@ -26,6 +28,7 @@ MainWnd::MainWnd(const char *title, int width, int height) : \
 void MainWnd::onRestartBtnClicked() {
 
 	mine_sweeper->reset();
+	restart_btn.set_label(DEF_RESET_STR);
 }
 
 MainWnd::~MainWnd() { }
