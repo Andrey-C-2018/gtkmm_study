@@ -14,6 +14,7 @@ class GameScreen : public IGameScreen, public IDrawable {
 	int cell_width, cell_height;
 	std::vector<std::vector<CellProperties>> cells;
 	size_t cols, rows;
+	Pango::FontDescription font;
 
 	void drawText(const DrawingContext &cr, \
 					double x, double y, const char *text);

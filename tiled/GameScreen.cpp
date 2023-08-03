@@ -7,6 +7,10 @@ GameScreen::GameScreen(Gtk::DrawingArea *parent_) : \
 
 	assert(parent);
 	screenSizeChanged(parent->get_allocation());
+
+	font.set_family("Monospace");
+	font.set_weight(Pango::WEIGHT_BOLD);
+	font.set_size(18 * PANGO_SCALE);
 }
 
 void GameScreen::screenSizeChanged(const Gtk::Allocation &allocation) {
@@ -95,10 +99,6 @@ bool GameScreen::draw(const DrawingContext &cr) {
 
 void GameScreen::drawText(const DrawingContext &cr, \
 							double x, double y, const char *text) {
-
-	Pango::FontDescription font;
-	font.set_family("Monospace");
-	font.set_weight(Pango::WEIGHT_BOLD);
 
 	auto layout = parent->create_pango_layout(text);
 	layout->set_font_description(font);

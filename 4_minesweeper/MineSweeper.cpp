@@ -116,7 +116,7 @@ void MineSweeper::boom(size_t col, size_t row) {
 	assert (screen);
 	game_over = true;
 	screen->setCellColor(col, row, MINED);
-	screen->setCellText(col, row, "M");
+	screen->setCellText(col, row, u8"\xF0\x9F\x92\xA3");
 	messenger->sendMessage("you lose");
 }
 
@@ -155,7 +155,7 @@ void MineSweeper::onMouseRButtonDown(size_t col, size_t row) {
 	else {
 		flags_count++;
 		screen->setCellColor(col, row, MARKED);
-		screen->setCellText(col, row, "F");
+		screen->setCellText(col, row, u8"\xF0\x9F\x9A\xA9");
 	}
 	cell.is_marked = !cell.is_marked;
 	screen->redraw();
