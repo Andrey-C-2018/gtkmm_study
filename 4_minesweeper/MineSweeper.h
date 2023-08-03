@@ -3,7 +3,7 @@
 #include <string>
 #include <tiled/IEventsHandler.h>
 #include <tiled/Color.h>
-#include "IMessenger.h"
+#include "Messenger.h"
 
 class MineSweeper : public IEventsHandler {
 	enum Constants {
@@ -20,7 +20,7 @@ class MineSweeper : public IEventsHandler {
 	size_t closed_cells_count, flags_count;
 	bool game_over, opening_allowed;
 	IGameScreen *screen;
-	std::unique_ptr<IMessenger> messenger;
+	std::unique_ptr<Messenger> messenger;
 
 	void resetCells();
 	void fillMinedNeighboursCounts();
@@ -30,7 +30,7 @@ class MineSweeper : public IEventsHandler {
 	void boom(size_t col, size_t row);
 
 public:
-	MineSweeper(std::unique_ptr<IMessenger> messenger);
+	MineSweeper(std::unique_ptr<Messenger> messenger);
 
 	void onInit(IGameScreen &screen) override;
 	void onMouseLButtonDown(size_t col, size_t row) override;

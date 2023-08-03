@@ -5,7 +5,7 @@
 #include <tiled/IGameScreen.h>
 #include "MineSweeper.h"
 
-MineSweeper::MineSweeper(std::unique_ptr<IMessenger> messenger_) : \
+MineSweeper::MineSweeper(std::unique_ptr<Messenger> messenger_) : \
 		INITIAL(100, 100, 100), \
 		OPENED(0, 0xff, 0), \
 		MINED(0xff, 0, 0), \
@@ -85,7 +85,7 @@ void MineSweeper::openCell(size_t col, size_t row) {
 	screen->setCellColor(col, row, OPENED);
 	if (closed_cells_count == MINES_MAX_COUNT) {
 		game_over = true;
-		messenger->sendMessage("you win!");
+		messenger->onVictory();
 	}
 	if (cell.mined_neighbours > 0) {
 		cell.label = std::to_string(cell.mined_neighbours);
@@ -117,7 +117,7 @@ void MineSweeper::boom(size_t col, size_t row) {
 	game_over = true;
 	screen->setCellColor(col, row, MINED);
 	screen->setCellText(col, row, u8"\xF0\x9F\x92\xA3");
-	messenger->sendMessage("you lose");
+	messenger->onDefeat();
 }
 
 void MineSweeper::onMouseLButtonDown(size_t col, size_t row) {
@@ -198,6 +198,7 @@ void MineSweeper::reset() {
 
 	screen->reset(INITIAL);
 	screen->redraw();
+	messenger->onReset();
 }
 
 MineSweeper::~MineSweeper() { }

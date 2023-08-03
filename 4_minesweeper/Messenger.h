@@ -1,18 +1,19 @@
 #pragma once
-#include "IMessenger.h"
+#include <gtkmm/button.h>
 
-class Messenger : public IMessenger {
+class Messenger final {
 	Gtk::Button &output_widget;
+	void setFontSize();
 
 public:
-	Messenger(Gtk::Button &output_widget);
+	explicit Messenger(Gtk::Button &output_widget);
 
 	Messenger(const Messenger &obj) = delete;
 	Messenger(Messenger &&obj) = default;
 	Messenger& operator=(const Messenger &obj) = delete;
-	Messenger& operator=(Messenger &&obj) = default;
+	Messenger& operator=(Messenger &&obj) = delete;
 
-	void sendMessage(const char *text) override;
-
-	~Messenger() override;
+	void onVictory();
+	void onDefeat();
+	void onReset();
 };

@@ -10,7 +10,7 @@ GameScreen::GameScreen(Gtk::DrawingArea *parent_) : \
 
 	font.set_family("Monospace");
 	font.set_weight(Pango::WEIGHT_BOLD);
-	font.set_size(18 * PANGO_SCALE);
+	font.set_size(24 * PANGO_SCALE);
 }
 
 void GameScreen::screenSizeChanged(const Gtk::Allocation &allocation) {
