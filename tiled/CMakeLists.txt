@@ -42,6 +42,6 @@ add_library(tiled GameField.cpp GameField.h
         IGameScreen.h
 		IEventsHandler.h
 		IDrawable.h
-		Color.h Color.cpp MessageBox.cpp MessageBox.h)
+		Color.h Color.cpp)
 set_target_properties(tiled PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 target_include_directories(tiled PUBLIC ${GTKMM3_INCLUDE_DIRS})

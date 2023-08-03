@@ -3,10 +3,9 @@
 #include <chrono>
 #include <cassert>
 #include <tiled/IGameScreen.h>
-#include <tiled/MessageBox.h>
 #include "MineSweeper.h"
 
-MineSweeper::MineSweeper() : \
+MineSweeper::MineSweeper(std::unique_ptr<IMessenger> messenger_) : \
 		INITIAL(100, 100, 100), \
 		OPENED(0, 0xff, 0), \
 		MINED(0xff, 0, 0), \
@@ -14,7 +13,7 @@ MineSweeper::MineSweeper() : \
 		closed_cells_count(COLS * ROWS), \
 		flags_count(0), \
 		game_over(false), \
-		screen(nullptr) {
+		screen(nullptr), messenger(std::move(messenger_)) {
 
 	resetCells();
 	fillMinedNeighboursCounts();
@@ -86,7 +85,7 @@ void MineSweeper::openCell(size_t col, size_t row) {
 	screen->setCellColor(col, row, OPENED);
 	if (closed_cells_count == MINES_MAX_COUNT) {
 		game_over = true;
-		MessageBox::showMessage("", "you win!");
+		messenger->sendMessage("you win!");
 	}
 	if (cell.mined_neighbours > 0) {
 		cell.label = std::to_string(cell.mined_neighbours);
@@ -118,7 +117,7 @@ void MineSweeper::boom(size_t col, size_t row) {
 	game_over = true;
 	screen->setCellColor(col, row, MINED);
 	screen->setCellText(col, row, "M");
-	MessageBox::showMessage("", "you lose");
+	messenger->sendMessage("you lose");
 }
 
 void MineSweeper::onMouseLButtonDown(size_t col, size_t row) {

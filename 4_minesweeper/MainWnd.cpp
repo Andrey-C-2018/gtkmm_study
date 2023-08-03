@@ -1,10 +1,12 @@
 #include <cassert>
 #include "MainWnd.h"
+#include "Messenger.h"
 
 MainWnd::MainWnd(const char *title, int width, int height) : \
-					mine_sweeper(std::make_shared<MineSweeper>()), \
 					vert_box(Gtk::ORIENTATION_VERTICAL, 5), \
-					restart_btn("Restart"){
+					restart_btn("Restart"), \
+					mine_sweeper(std::make_shared<MineSweeper>(\
+									std::make_unique<Messenger>(restart_btn))) {
 
 	assert (title);
     set_border_width(10);

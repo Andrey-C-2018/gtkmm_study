@@ -1,7 +1,9 @@
 #pragma once
+#include <memory>
 #include <string>
 #include <tiled/IEventsHandler.h>
 #include <tiled/Color.h>
+#include "IMessenger.h"
 
 class MineSweeper : public IEventsHandler {
 	enum Constants {
@@ -18,6 +20,7 @@ class MineSweeper : public IEventsHandler {
 	size_t closed_cells_count, flags_count;
 	bool game_over;
 	IGameScreen *screen;
+	std::unique_ptr<IMessenger> messenger;
 
 	void resetCells();
 	void fillMinedNeighboursCounts();
@@ -27,7 +30,7 @@ class MineSweeper : public IEventsHandler {
 	void boom(size_t col, size_t row);
 
 public:
-	MineSweeper();
+	MineSweeper(std::unique_ptr<IMessenger> messenger);
 
 	void onInit(IGameScreen &screen) override;
 	void onMouseLButtonDown(size_t col, size_t row) override;

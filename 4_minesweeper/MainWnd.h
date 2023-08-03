@@ -6,9 +6,9 @@
 #include "MineSweeper.h"
 
 class MainWnd : public Gtk::Window {
-	std::shared_ptr<MineSweeper> mine_sweeper;
 	Gtk::Box vert_box;
 	Gtk::Button restart_btn;
+	std::shared_ptr<MineSweeper> mine_sweeper;
 	GameField field;
 
 protected:
