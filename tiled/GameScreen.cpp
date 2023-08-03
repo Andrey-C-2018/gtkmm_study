@@ -24,15 +24,13 @@ void GameScreen::screenSizeChanged(const Gtk::Allocation &allocation) {
 size_t GameScreen::getColByXCoord(gdouble x) const {
 
 	auto col = (size_t) (x / (gdouble)cell_width);
-	assert (col < cols);
-	return col;
+	return col < cols ? col : 0;
 }
 
 size_t GameScreen::getRowByYCoord(gdouble y) const {
 
 	auto row = (size_t) (y / (gdouble)cell_height);
-	assert (row < rows);
-	return row;
+	return row < rows ? row : 0;
 }
 
 void GameScreen::setSize(size_t cols_, size_t rows_, Color def_color) {

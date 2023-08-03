@@ -3,7 +3,7 @@
 
 GameField::GameField() : game_screen(this) {
 
-	add_events(Gdk::BUTTON_PRESS_MASK | \
+	add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK | \
 						Gdk::KEY_PRESS_MASK | Gdk::KEY_RELEASE_MASK);
 	set_can_focus(true);
 }

@@ -18,7 +18,7 @@ class MineSweeper : public IEventsHandler {
 	};
 	Cell cells[COLS][ROWS]{};
 	size_t closed_cells_count, flags_count;
-	bool game_over;
+	bool game_over, opening_allowed;
 	IGameScreen *screen;
 	std::unique_ptr<IMessenger> messenger;
 
@@ -36,7 +36,7 @@ public:
 	void onMouseLButtonDown(size_t col, size_t row) override;
 	void onMouseLButtonUp(size_t col, size_t row) override { }
 	void onMouseWheelDown(size_t col, size_t row) override;
-	void onMouseWheelUp(size_t col, size_t row) override { }
+	void onMouseWheelUp(size_t col, size_t row) override;
 	void onMouseRButtonDown(size_t col, size_t row) override;
 	void onMouseRButtonUp(size_t col, size_t row) override { }
 	void onKeyPress(char ch) override { }
