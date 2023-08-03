@@ -9,7 +9,9 @@ MineSweeper::MineSweeper() : \
 		INITIAL(100, 100, 100), \
 		OPENED(0, 0xff, 0), \
 		MINED(0xff, 0, 0), \
-		MARKED(0xff, 0xff, 0),
+		MARKED(0xff, 0xff, 0), \
+		closed_cells_count(COLS * ROWS), \
+		flags_count(0), \
 		game_over(false) {
 
 	Cell ordinary{false, false, false};
@@ -20,8 +22,13 @@ MineSweeper::MineSweeper() : \
 	std::default_random_engine urng(std::chrono::system_clock::now().time_since_epoch().count());
 	std::shuffle(&cells[0][0], &cells[0][0] + COLS * ROWS, urng);
 
+	fillMinedNeighboursCounts();
+}
+
+void MineSweeper::fillMinedNeighboursCounts() {
+
 	Cell *neighbours[8];
-	for (size_t i = 0; i < COLS; i++)
+	for (size_t i = 0; i < COLS; i++) {
 		for (size_t j = 0; j < ROWS; j++) {
 			if (cells[i][j].is_mined) {
 				size_t count = getNeighbours(i, j, neighbours);
@@ -29,6 +36,7 @@ MineSweeper::MineSweeper() : \
 					neighbours[k]->mined_neighbours++;
 			}
 		}
+	}
 }
 
 size_t MineSweeper::getNeighbours(size_t col, size_t row, \
@@ -60,6 +68,7 @@ void MineSweeper::openCell(IGameScreen &screen, size_t col, size_t row) {
 	Cell &cell = cells[col][row];
 	if (game_over || cell.is_open || cell.is_marked) return;
 	cell.is_open = true;
+	closed_cells_count--;
 
 	if (cell.is_mined) {
 		boom(screen, col, row);
@@ -67,6 +76,8 @@ void MineSweeper::openCell(IGameScreen &screen, size_t col, size_t row) {
 	}
 
 	screen.setCellColor(col, row, OPENED);
+	if (closed_cells_count == MINES_MAX_COUNT) game_over = true;
+
 	if (cell.mined_neighbours > 0) {
 		cell.label = std::to_string(cell.mined_neighbours);
 		screen.setCellText(col, row, cell.label.c_str());
@@ -104,8 +115,6 @@ void MineSweeper::onMouseLButtonDown(IGameScreen &screen, size_t col, size_t row
 	screen.redraw();
 }
 
-void MineSweeper::onMouseLButtonUp(IGameScreen &screen, size_t col, size_t row) { }
-
 void MineSweeper::onMouseWheelDown(IGameScreen &screen, size_t col, size_t row) {
 
 	Cell &cell = cells[col][row];
@@ -121,29 +130,24 @@ void MineSweeper::onMouseWheelDown(IGameScreen &screen, size_t col, size_t row) 
 	screen.redraw();
 }
 
-void MineSweeper::onMouseWheelUp(IGameScreen &screen, size_t col, size_t row) { }
-
 void MineSweeper::onMouseRButtonDown(IGameScreen &screen, size_t col, size_t row) {
 
 	Cell &cell = cells[col][row];
-	if (game_over || cell.is_open) return;
+	if (game_over || cell.is_open || \
+		(flags_count == MINES_MAX_COUNT && !cell.is_marked)) return;
 
 	if (cell.is_marked) {
+		flags_count--;
 		screen.setCellColor(col, row, INITIAL);
 		screen.setCellText(col, row, "");
 	}
 	else {
+		flags_count++;
 		screen.setCellColor(col, row, MARKED);
 		screen.setCellText(col, row, "F");
 	}
 	cell.is_marked = !cell.is_marked;
 	screen.redraw();
 }
-
-void MineSweeper::onMouseRButtonUp(IGameScreen &screen, size_t col, size_t row) { }
-
-void MineSweeper::onKeyPress(IGameScreen &screen, char ch) { }
-
-void MineSweeper::onKeyReleased(IGameScreen &screen, char ch) { }
 
 MineSweeper::~MineSweeper() { }
