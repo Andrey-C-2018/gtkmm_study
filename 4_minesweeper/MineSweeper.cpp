@@ -3,6 +3,7 @@
 #include <chrono>
 #include <cassert>
 #include <tiled/IGameScreen.h>
+#include <tiled/MessageBox.h>
 #include "MineSweeper.h"
 
 MineSweeper::MineSweeper() : \
@@ -76,8 +77,10 @@ void MineSweeper::openCell(IGameScreen &screen, size_t col, size_t row) {
 	}
 
 	screen.setCellColor(col, row, OPENED);
-	if (closed_cells_count == MINES_MAX_COUNT) game_over = true;
-
+	if (closed_cells_count == MINES_MAX_COUNT) {
+		game_over = true;
+		MessageBox::showMessage("", "you win!");
+	}
 	if (cell.mined_neighbours > 0) {
 		cell.label = std::to_string(cell.mined_neighbours);
 		screen.setCellText(col, row, cell.label.c_str());
@@ -107,6 +110,7 @@ void MineSweeper::boom(IGameScreen &screen, size_t col, size_t row) {
 	game_over = true;
 	screen.setCellColor(col, row, MINED);
 	screen.setCellText(col, row, "M");
+	MessageBox::showMessage("", "you lose");
 }
 
 void MineSweeper::onMouseLButtonDown(IGameScreen &screen, size_t col, size_t row) {
