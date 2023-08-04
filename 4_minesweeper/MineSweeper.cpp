@@ -5,7 +5,7 @@
 #include <tiled/IGameScreen.h>
 #include "MineSweeper.h"
 
-MineSweeper::MineSweeper(std::unique_ptr<Messenger> messenger_) : \
+MineSweeper::MineSweeper(INotifier *notifier_) : \
 		INITIAL(100, 100, 100), \
 		OPENED(0, 0xff, 0), \
 		MINED(0xff, 0, 0), \
@@ -13,8 +13,9 @@ MineSweeper::MineSweeper(std::unique_ptr<Messenger> messenger_) : \
 		closed_cells_count(COLS * ROWS), \
 		flags_count(0), \
 		game_over(false), opening_allowed(false), \
-		screen(nullptr), messenger(std::move(messenger_)) {
+		screen(nullptr), notifier(notifier_) {
 
+	assert (notifier);
 	resetCells();
 	fillMinedNeighboursCounts();
 }
@@ -67,6 +68,7 @@ void MineSweeper::onInit(IGameScreen &screen_) {
 
 	screen = &screen_;
 	screen->setSize(COLS, ROWS, INITIAL);
+	notifier->onMinesPlaced(MINES_MAX_COUNT);
 }
 
 void MineSweeper::openCell(size_t col, size_t row) {
@@ -85,8 +87,9 @@ void MineSweeper::openCell(size_t col, size_t row) {
 	screen->setCellColor(col, row, OPENED);
 	if (closed_cells_count == MINES_MAX_COUNT) {
 		game_over = true;
-		messenger->onVictory();
+		notifier->onVictory();
 	}
+
 	if (cell.mined_neighbours > 0) {
 		cell.label = std::to_string(cell.mined_neighbours);
 		screen->setCellText(col, row, cell.label.c_str());
@@ -117,7 +120,7 @@ void MineSweeper::boom(size_t col, size_t row) {
 	game_over = true;
 	screen->setCellColor(col, row, MINED);
 	screen->setCellText(col, row, u8"\xF0\x9F\x92\xA3");
-	messenger->onDefeat();
+	notifier->onDefeat();
 }
 
 void MineSweeper::onMouseLButtonDown(size_t col, size_t row) {
@@ -184,6 +187,7 @@ void MineSweeper::onMouseRButtonDown(size_t col, size_t row) {
 	}
 	cell.is_marked = !cell.is_marked;
 	screen->redraw();
+	notifier->onFlag(flags_count);
 }
 
 void MineSweeper::reset() {
@@ -198,7 +202,7 @@ void MineSweeper::reset() {
 
 	screen->reset(INITIAL);
 	screen->redraw();
-	messenger->onReset();
+	notifier->onReset();
 }
 
 MineSweeper::~MineSweeper() { }
