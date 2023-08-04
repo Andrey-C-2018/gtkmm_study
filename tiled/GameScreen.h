@@ -5,6 +5,9 @@
 #include "IDrawable.h"
 
 class GameScreen : public IGameScreen, public IDrawable {
+	enum Constants {
+		DEF_TEXT_SIZE = 24
+	};
 	struct CellProperties {
 		Color color;
 		std::string text;

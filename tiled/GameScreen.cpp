@@ -6,11 +6,10 @@ GameScreen::GameScreen(Gtk::DrawingArea *parent_) : \
 						cols(0), rows(0) {
 
 	assert(parent);
-	screenSizeChanged(parent->get_allocation());
-
 	font.set_family("Monospace");
 	font.set_weight(Pango::WEIGHT_BOLD);
-	font.set_size(24 * PANGO_SCALE);
+
+	screenSizeChanged(parent->get_allocation());
 }
 
 void GameScreen::screenSizeChanged(const Gtk::Allocation &allocation) {
@@ -19,6 +18,7 @@ void GameScreen::screenSizeChanged(const Gtk::Allocation &allocation) {
 	int height = allocation.get_height();
 	cell_width = cols != 0 ? width / (int)cols : 0;
 	cell_height = rows != 0 ? height / (int)rows : 0;
+	font.set_absolute_size(PANGO_SCALE * cell_width / 3.0);
 }
 
 size_t GameScreen::getColByXCoord(gdouble x) const {

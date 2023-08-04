@@ -57,6 +57,7 @@ void MainWnd::onDefeat() {
 void MainWnd::onReset() {
 
 	setRestartBtnText(u8"\xF0\x9F\x98\x90");
+	counter_label.set_label(Glib::ustring::sprintf("%d/%d", 0, mines_count));
 }
 
 MainWnd::~MainWnd() { }

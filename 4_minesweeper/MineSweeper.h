@@ -7,7 +7,7 @@
 
 class MineSweeper : public IEventsHandler {
 	enum Constants {
-		COLS = 8, ROWS = 8, MINES_MAX_COUNT = 10
+		COLS = 16, ROWS = 16, MINES_MAX_COUNT = 40
 	};
 	const Color INITIAL, OPENED, MINED, MARKED;
 

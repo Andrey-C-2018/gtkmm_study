@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(minesweeper VERSION 0.10 LANGUAGES CXX)
+project(minesweeper VERSION 0.11 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
