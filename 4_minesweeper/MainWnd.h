@@ -25,7 +25,7 @@ protected:
 	void onRestartBtnClicked();
 
 public:
-	MainWnd(const char *title, int width, int height);
+	MainWnd();
 
 	MainWnd(const MainWnd &obj) = delete;
 	MainWnd(MainWnd &&obj) = default;

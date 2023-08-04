@@ -1,18 +1,30 @@
 #include <cassert>
+#include <algorithm>
 #include "MainWnd.h"
 
-MainWnd::MainWnd(const char *title, int width, int height) : \
-					horz_box(Gtk::ORIENTATION_HORIZONTAL, 5), \
+MainWnd::MainWnd() : horz_box(Gtk::ORIENTATION_HORIZONTAL, 5), \
 					vert_box(Gtk::ORIENTATION_VERTICAL, 5), \
 					counter_label(""), \
 					restart_btn(""), \
 					mine_sweeper(std::make_shared<MineSweeper>(this)), \
 					mines_count(0) {
 
-	assert (title);
     set_border_width(10);
-    set_title(title);
-	set_default_size(width, height);
+    set_title("Minesweeper");
+	set_position(Gtk::WIN_POS_MOUSE);
+
+	Gdk::Display *gdk_display = Gdk::Display::get_default().get();
+	Gdk::Screen *gdk_screen = gdk_display->get_default_screen().get();
+	int base = std::min(gdk_screen->get_height(), gdk_screen->get_height());
+	set_default_size(base - 210, base - 200);
+
+	Gdk::Geometry geometry;
+	geometry.min_width = 300;
+	geometry.min_height = 310;
+	geometry.min_aspect = 0.9;
+	geometry.max_aspect = 0.9;
+	set_geometry_hints(*this, geometry, \
+					Gdk::WindowHints::HINT_MIN_SIZE | Gdk::WindowHints::HINT_ASPECT);
 
 	MainWnd::onReset();
 	restart_btn.signal_clicked().connect(sigc::mem_fun(*this, &MainWnd::onRestartBtnClicked));
