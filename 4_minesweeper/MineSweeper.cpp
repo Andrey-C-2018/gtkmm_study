@@ -5,6 +5,9 @@
 #include <tiled/IGameScreen.h>
 #include "MineSweeper.h"
 
+const char MineSweeper::MINE_EMOJI[] = u8"\xF0\x9F\x92\xA3";
+const char MineSweeper::FLAG_EMOJI[] = u8"\xF0\x9F\x9A\xA9";
+
 MineSweeper::MineSweeper(INotifier *notifier_) : \
 		INITIAL(100, 100, 100), \
 		OPENED(0, 0xff, 0), \
@@ -85,11 +88,6 @@ void MineSweeper::openCell(size_t col, size_t row) {
 	}
 
 	screen->setCellColor(col, row, OPENED);
-	if (closed_cells_count == MINES_MAX_COUNT) {
-		game_over = true;
-		notifier->onVictory();
-	}
-
 	if (cell.mined_neighbours > 0) {
 		cell.label = std::to_string(cell.mined_neighbours);
 		screen->setCellText(col, row, cell.label.c_str());
@@ -105,6 +103,8 @@ void MineSweeper::openCell(size_t col, size_t row) {
 			}
 		}
 	}
+
+	finalizeIfWin();
 }
 
 std::pair<size_t, size_t> MineSweeper::getCellLocation(const Cell *cell) const {
@@ -119,8 +119,33 @@ void MineSweeper::boom(size_t col, size_t row) {
 	assert (screen);
 	game_over = true;
 	screen->setCellColor(col, row, MINED);
-	screen->setCellText(col, row, u8"\xF0\x9F\x92\xA3");
+	screen->setCellText(col, row, MINE_EMOJI);
+
+	for (size_t i = 0; i < COLS; i++) {
+		for (size_t j = 0; j < ROWS; j++) {
+			if (cells[i][j].is_mined && (i != col || j != row)) {
+				screen->setCellColor(i, j, MARKED);
+				screen->setCellText(i, j, MINE_EMOJI);
+			}
+		}
+	}
 	notifier->onDefeat();
+}
+
+void MineSweeper::finalizeIfWin() {
+
+	if (closed_cells_count == MINES_MAX_COUNT) {
+		game_over = true;
+
+		for (size_t i = 0; i < COLS; i++) {
+			for (size_t j = 0; j < ROWS; j++) {
+				auto &cell = cells[i][j];
+				if (cell.is_mined && !cell.is_marked)
+					visualizeMarkOnCell(i, j);
+			}
+		}
+		notifier->onVictory();
+	}
 }
 
 void MineSweeper::onMouseLButtonDown(size_t col, size_t row) {
@@ -182,8 +207,7 @@ void MineSweeper::onMouseRButtonDown(size_t col, size_t row) {
 	}
 	else {
 		flags_count++;
-		screen->setCellColor(col, row, MARKED);
-		screen->setCellText(col, row, u8"\xF0\x9F\x9A\xA9");
+		visualizeMarkOnCell(col, row);
 	}
 	cell.is_marked = !cell.is_marked;
 	screen->redraw();

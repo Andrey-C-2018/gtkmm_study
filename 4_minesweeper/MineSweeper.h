@@ -7,8 +7,11 @@
 
 class MineSweeper : public IEventsHandler {
 	enum Constants {
-		COLS = 16, ROWS = 16, MINES_MAX_COUNT = 40
+		COLS = 8, ROWS = 8, MINES_MAX_COUNT = 10
 	};
+	static const char MINE_EMOJI[];
+	static const char FLAG_EMOJI[];
+
 	const Color INITIAL, OPENED, MINED, MARKED;
 
 	struct Cell {
@@ -25,9 +28,11 @@ class MineSweeper : public IEventsHandler {
 	void resetCells();
 	void fillMinedNeighboursCounts();
 	void openCell(size_t col, size_t row);
+	inline void visualizeMarkOnCell(size_t col, size_t row);
 	size_t getNeighbours(size_t col, size_t row, Cell *neighbours[8]);
 	std::pair<size_t, size_t> getCellLocation(const Cell *cell) const;
 	void boom(size_t col, size_t row);
+	void finalizeIfWin();
 
 public:
 	explicit MineSweeper(INotifier *notifier);
@@ -46,3 +51,11 @@ public:
 
 	virtual ~MineSweeper();
 };
+
+//*************************************************
+
+void MineSweeper::visualizeMarkOnCell(size_t col, size_t row) {
+
+	screen->setCellColor(col, row, MARKED);
+	screen->setCellText(col, row, FLAG_EMOJI);
+}
