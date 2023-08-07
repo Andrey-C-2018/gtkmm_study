@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <cassert>
 #include <tiled/IEventsHandler.h>
 #include <tiled/Color.h>
 #include "INotifier.h"
@@ -19,7 +20,7 @@ class MineSweeper : public IEventsHandler {
 		std::string label;
 		size_t mined_neighbours;
 	};
-	Cell cells[COLS][ROWS]{};
+	std::vector<Cell> cells;
 	size_t closed_cells_count, flags_count;
 	bool game_over, opening_allowed;
 	IGameScreen *screen;
@@ -27,6 +28,7 @@ class MineSweeper : public IEventsHandler {
 
 	void resetCells();
 	void fillMinedNeighboursCounts();
+	inline Cell &getCell(size_t col, size_t row);
 	void openCell(size_t col, size_t row);
 	inline void visualizeMarkOnCell(size_t col, size_t row);
 	size_t getNeighbours(size_t col, size_t row, Cell *neighbours[8]);
@@ -53,6 +55,13 @@ public:
 };
 
 //*************************************************
+
+MineSweeper::Cell &MineSweeper::getCell(size_t col, size_t row) {
+
+	assert (col < COLS);
+	assert (row < ROWS);
+	return cells[COLS * row + col];
+}
 
 void MineSweeper::visualizeMarkOnCell(size_t col, size_t row) {
 
