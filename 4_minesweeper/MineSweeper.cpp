@@ -6,13 +6,19 @@
 
 const char MineSweeper::MINE_EMOJI[] = u8"\xF0\x9F\x92\xA3";
 const char MineSweeper::FLAG_EMOJI[] = u8"\xF0\x9F\x9A\xA9";
+constexpr size_t DEF_COLS_COUNT = 8;
+constexpr size_t DEF_ROWS_COUNT = 8;
+constexpr size_t DEF_MINES_COUNT = 8;
 
 MineSweeper::MineSweeper(INotifier *notifier_) : \
 		INITIAL(100, 100, 100), \
 		OPENED(0, 0xff, 0), \
 		MINED(0xff, 0, 0), \
 		MARKED(0xff, 0xff, 0), \
-		closed_cells_count(COLS * ROWS), \
+		cols_count(DEF_COLS_COUNT), \
+		rows_count(DEF_ROWS_COUNT), \
+		mines_count(DEF_MINES_COUNT), \
+		closed_cells_count(cols_count * rows_count), \
 		flags_count(0), \
 		game_over(false), opening_allowed(false), \
 		screen(nullptr), notifier(notifier_) {
@@ -26,10 +32,10 @@ void MineSweeper::resetCells() {
 
 	Cell ordinary{false, false, false};
 	Cell mined_cell{false, true, false};
-	cells.reserve(COLS * ROWS);
+	cells.reserve(cols_count * rows_count);
 
-	cells.assign(MINES_MAX_COUNT, mined_cell);
-	cells.insert(cells.end(), COLS * ROWS - MINES_MAX_COUNT, ordinary);
+	cells.assign(mines_count, mined_cell);
+	cells.insert(cells.end(), cols_count * rows_count - mines_count, ordinary);
 
 	std::default_random_engine urng(std::chrono::system_clock::now().time_since_epoch().count());
 	std::shuffle(cells.begin(), cells.end(), urng);
@@ -38,8 +44,8 @@ void MineSweeper::resetCells() {
 void MineSweeper::fillMinedNeighboursCounts() {
 
 	Cell *neighbours[8];
-	for (size_t i = 0; i < COLS; i++) {
-		for (size_t j = 0; j < ROWS; j++) {
+	for (size_t i = 0; i < cols_count; i++) {
+		for (size_t j = 0; j < rows_count; j++) {
 			if (getCell(i, j).is_mined) {
 				size_t count = getNeighbours(i, j, neighbours);
 				for (size_t k = 0; k < count; k++)
@@ -57,7 +63,7 @@ size_t MineSweeper::getNeighbours(size_t col, size_t row, \
 	size_t initial_j = row > 0 ? row - 1 : 0;
 	for(size_t i = initial_i; i <= col + 1; i++) {
 		for (size_t j = initial_j; j <= row + 1; j++) {
-			if (i >= COLS || j >= ROWS || \
+			if (i >= cols_count || j >= rows_count || \
                 (i == col && j == row))
 				continue;
 
@@ -71,8 +77,8 @@ size_t MineSweeper::getNeighbours(size_t col, size_t row, \
 void MineSweeper::onInit(IGameScreen &screen_) {
 
 	screen = &screen_;
-	screen->setSize(COLS, ROWS, INITIAL);
-	notifier->onMinesPlaced(MINES_MAX_COUNT);
+	screen->setSize(cols_count, rows_count, INITIAL);
+	notifier->onMinesPlaced(mines_count);
 }
 
 void MineSweeper::openCell(size_t col, size_t row) {
@@ -108,13 +114,6 @@ void MineSweeper::openCell(size_t col, size_t row) {
 	finalizeIfWin();
 }
 
-std::pair<size_t, size_t> MineSweeper::getCellLocation(const Cell *cell) const {
-
-	const Cell *first = &cells[0];
-	size_t dist = std::distance(first, cell);
-	return {dist % COLS, dist / COLS};
-}
-
 void MineSweeper::boom(size_t col, size_t row) {
 
 	assert (screen);
@@ -122,8 +121,8 @@ void MineSweeper::boom(size_t col, size_t row) {
 	screen->setCellColor(col, row, MINED);
 	screen->setCellText(col, row, MINE_EMOJI);
 
-	for (size_t i = 0; i < COLS; i++) {
-		for (size_t j = 0; j < ROWS; j++) {
+	for (size_t i = 0; i < cols_count; i++) {
+		for (size_t j = 0; j < rows_count; j++) {
 			if (getCell(i, j).is_mined && (i != col || j != row)) {
 				screen->setCellColor(i, j, MARKED);
 				screen->setCellText(i, j, MINE_EMOJI);
@@ -135,16 +134,17 @@ void MineSweeper::boom(size_t col, size_t row) {
 
 void MineSweeper::finalizeIfWin() {
 
-	if (closed_cells_count == MINES_MAX_COUNT) {
+	if (closed_cells_count == mines_count) {
 		game_over = true;
 
-		for (size_t i = 0; i < COLS; i++) {
-			for (size_t j = 0; j < ROWS; j++) {
+		for (size_t i = 0; i < cols_count; i++) {
+			for (size_t j = 0; j < rows_count; j++) {
 				auto &cell = getCell(i, j);
 				if (cell.is_mined && !cell.is_marked)
 					visualizeMarkOnCell(i, j);
 			}
 		}
+		notifier->onFlag(mines_count);
 		notifier->onVictory();
 	}
 }
@@ -169,11 +169,12 @@ void MineSweeper::onMouseWheelDown(size_t col, size_t row) {
 			neighbours_flags_count++;
 
 	if (neighbours_flags_count < cell.mined_neighbours) {
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < count; i++) {
 			if (!neighbours[i]->is_open && !neighbours[i]->is_marked) {
 				auto location = getCellLocation(neighbours[i]);
 				screen->setCellText(location.first, location.second, "?");
 			}
+		}
 		screen->redraw();
 	}
 	else
@@ -199,7 +200,7 @@ void MineSweeper::onMouseRButtonDown(size_t col, size_t row) {
 
 	Cell &cell = getCell(col, row);
 	if (game_over || cell.is_open || \
-		(flags_count == MINES_MAX_COUNT && !cell.is_marked)) return;
+		(flags_count == mines_count && !cell.is_marked)) return;
 
 	if (cell.is_marked) {
 		flags_count--;
@@ -218,7 +219,7 @@ void MineSweeper::onMouseRButtonDown(size_t col, size_t row) {
 void MineSweeper::reset() {
 
 	assert (screen);
-	closed_cells_count = COLS * ROWS;
+	closed_cells_count = cols_count * rows_count;
 	flags_count = 0;
 	game_over = false;
 
@@ -228,6 +229,14 @@ void MineSweeper::reset() {
 	screen->reset(INITIAL);
 	screen->redraw();
 	notifier->onReset();
+}
+
+void MineSweeper::reset(size_t cols_count_, size_t rows_count_, size_t mines_count_) {
+
+	cols_count = cols_count_;
+	rows_count = rows_count_;
+	mines_count = mines_count_;
+	reset();
 }
 
 MineSweeper::~MineSweeper() { }
