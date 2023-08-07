@@ -236,6 +236,8 @@ void MineSweeper::reset(size_t cols_count_, size_t rows_count_, size_t mines_cou
 	cols_count = cols_count_;
 	rows_count = rows_count_;
 	mines_count = mines_count_;
+
+	onInit(*screen);
 	reset();
 }
 

@@ -11,18 +11,25 @@ class MainWnd : public Gtk::Window, public INotifier {
 	enum Constants {
 		DEF_LABELS_FONT_SIZE = 24
 	};
+	enum Games {
+		SIZE8 = 0, SIZE16 = 1, SIZE30 = 2
+	};
 	Gtk::Box horz_box, vert_box;
 	Gtk::Label counter_label;
 	Gtk::Button restart_btn;
 	std::shared_ptr<MineSweeper> mine_sweeper;
 	GameField field;
 	size_t mines_count;
+	double curr_ratio;
 
+	void setResizeConstraints(double ratio, bool def_size = false);
+	void initMenu();
 	static inline void setFontSize(Widget *widget);
 	inline void setRestartBtnText(const char *text);
 
 protected:
 	void onRestartBtnClicked();
+	void onSetFieldSize(int size);
 
 public:
 	MainWnd();

@@ -42,7 +42,7 @@ void GameScreen::setSize(size_t cols_, size_t rows_, Color def_color) {
 
 	CellProperties cell_props{def_color, ""};
 	std::vector<CellProperties> row(cols, cell_props);
-	cells.insert(cells.begin(), rows, row);
+	cells.assign(rows, row);
 	screenSizeChanged(parent->get_allocation());
 }
 
