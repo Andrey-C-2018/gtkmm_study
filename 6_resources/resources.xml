@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/images">
-    <file>bomb.png</file>
+  <gresource prefix="/">
+    <file>res/bomb.png</file>
+    <file>res/pi.txt</file>
   </gresource>
 </gresources>

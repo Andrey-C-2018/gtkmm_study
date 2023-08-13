@@ -22,10 +22,6 @@ message(STATUS "gtkmm include path: ${GTKMM3_INCLUDE_DIRS}")
 
 #######################################
 
-if(NOT MSVC OR MSVC_TOOLSET_VERSION LESS_EQUAL 80)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE})
-endif()
-
 find_program(GLIB_COMPILE_RESOURCES NAMES glib-compile-resources REQUIRED)
 add_custom_command(
         OUTPUT resources.cpp
@@ -35,7 +31,8 @@ add_custom_command(
         VERBATIM
         MAIN_DEPENDENCY resources.xml
         DEPENDS
-        ${CMAKE_SOURCE_DIR}/bomb.png
+        ${CMAKE_SOURCE_DIR}/res/bomb.png
+		${CMAKE_SOURCE_DIR}/res/pi.txt
 )
 
 add_custom_target(

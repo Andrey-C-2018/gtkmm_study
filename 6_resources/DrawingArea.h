@@ -3,7 +3,11 @@
 #include <gdkmm/pixbuf.h>
 
 class DrawingArea : public Gtk::DrawingArea {
-	Glib::RefPtr<Gdk::Pixbuf> pixbuf;	
+	Glib::RefPtr<Gdk::Pixbuf> pixbuf;
+	std::string pi;
+	Pango::FontDescription font;
+	void drawText(const Cairo::RefPtr<Cairo::Context>& cr, \
+					double x, double y, const std::string &text);
 
 protected:
 	bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
