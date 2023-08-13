@@ -10,10 +10,6 @@ if(NOT XLIBS_ROOT_FOLDER)
 endif()
 add_subdirectory(${XLIBS_ROOT_FOLDER}/tiled tiled_build)
 
-if(NOT MSVC OR MSVC_TOOLSET_VERSION LESS_EQUAL 80)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE})
-endif()
-
 add_executable(minesweeper main.cpp
         MainWnd.cpp MainWnd.h
         MineSweeper.cpp MineSweeper.h

@@ -88,7 +88,7 @@ bool GameScreen::draw(const DrawingContext &cr) {
 			cr->restore();
 			drawText(cr, cell_width * (double)j + cell_width / 2.0, \
 						cell_height * (double)i + cell_height / 2.0, \
-						cell_props.text.c_str());
+						cell_props.text);
 			cr->stroke();
 		}
 	}
@@ -96,7 +96,7 @@ bool GameScreen::draw(const DrawingContext &cr) {
 }
 
 void GameScreen::drawText(const DrawingContext &cr, \
-							double x, double y, const char *text) {
+							double x, double y, const Glib::ustring &text) {
 
 	auto layout = parent->create_pango_layout(text);
 	layout->set_font_description(font);

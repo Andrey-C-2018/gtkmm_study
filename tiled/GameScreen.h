@@ -5,12 +5,10 @@
 #include "IDrawable.h"
 
 class GameScreen : public IGameScreen, public IDrawable {
-	enum Constants {
-		DEF_TEXT_SIZE = 24
-	};
+
 	struct CellProperties {
 		Color color;
-		std::string text;
+		Glib::ustring text;
 	};
 
 	Gtk::DrawingArea *parent;
@@ -20,7 +18,7 @@ class GameScreen : public IGameScreen, public IDrawable {
 	Pango::FontDescription font;
 
 	void drawText(const DrawingContext &cr, \
-					double x, double y, const char *text);
+					double x, double y, const Glib::ustring &text);
 
 public:
 	explicit GameScreen(Gtk::DrawingArea *parent);
