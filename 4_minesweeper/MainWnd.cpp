@@ -12,6 +12,7 @@ MainWnd::MainWnd() : horz_box(Gtk::ORIENTATION_HORIZONTAL, 5), \
 					vert_box(Gtk::ORIENTATION_VERTICAL, 5), \
 					counter_label(""), \
 					restart_btn(""), \
+					restart_btn_label((Gtk::Label*)restart_btn.get_child()), \
 					mine_sweeper(std::make_shared<MineSweeper>(this)), \
 					mines_count(0), curr_ratio(0.0) {
 
@@ -21,6 +22,7 @@ MainWnd::MainWnd() : horz_box(Gtk::ORIENTATION_HORIZONTAL, 5), \
 
 	setResizeConstraints(0.9, true);
 
+	setFontSize(restart_btn_label);
 	MainWnd::onReset();
 	restart_btn.signal_clicked().connect(sigc::mem_fun(*this, \
 												&MainWnd::onRestartBtnClicked));
