@@ -1,24 +1,33 @@
 #pragma once
+#include <vector>
 #include <gtkmm/window.h>
 #include <gtkmm/toolbutton.h>
 #include <gtkmm/hvbox.h>
+#include "ICellsView.h"
+#include "Triangles.h"
 
-class Frame : public Gtk::Window {
-	static constexpr size_t COUNT = 8;
-	static constexpr size_t TRIANGLES_COUNT = 3;
-	static constexpr size_t BLANKS_COUNT = 2;
-
+class Frame : public Gtk::Window, public ICellsView {
 	Gtk::HBox box;
-	Gtk::Image tr_img[2 * TRIANGLES_COUNT], blank_img[BLANKS_COUNT];
-	Gtk::ToolButton buttons[COUNT];
+	Glib::RefPtr<Gdk::Pixbuf> left, right, blank;
+	std::vector<Gtk::Image> images;
+	std::vector<Gtk::ToolButton> buttons;
+	Triangles triangles;
+
+protected:
+	void onButtonClick(size_t index);
 
 public:
 	Frame();
 
 	Frame(const Frame &obj) = delete;
-	Frame(Frame &&obj) = default;
+	Frame(Frame &&obj) = delete;
 	Frame& operator=(const Frame &obj) = delete;
-	Frame& operator=(Frame &&obj) = default;
+	Frame& operator=(Frame &&obj) = delete;
 
-	virtual ~Frame(); 
+	void placeLeftTriangle(size_t index) override;
+	void placeBlank(size_t index) override;
+	void placeRightTriangle(size_t index) override;
+	void swapCells(size_t l, size_t r) override;
+
+	~Frame() override;
 };

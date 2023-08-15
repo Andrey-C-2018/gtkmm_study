@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(triangles VERSION 0.1 LANGUAGES CXX)
+project(triangles VERSION 0.3 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -32,6 +32,7 @@ add_custom_command(
         MAIN_DEPENDENCY resources.xml
         DEPENDS
         ${CMAKE_SOURCE_DIR}/res/left.png
+		${CMAKE_SOURCE_DIR}/res/blank.svg
 		${CMAKE_SOURCE_DIR}/res/right.png
 )
 
@@ -41,8 +42,10 @@ add_custom_target(
 )
 
 add_executable(triangles main.cpp
-	Frame.cpp Frame.h
-        ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp)
+		Frame.cpp Frame.h
+		Triangles.cpp Triangles.h
+		ICellsView.h
+	    ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp)
 
 set_target_properties(triangles PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 set_source_files_properties(
