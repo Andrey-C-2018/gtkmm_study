@@ -159,17 +159,17 @@ void MainWnd::onFlag(size_t flags_count) {
 
 void MainWnd::onVictory() {
 
-	setRestartBtnText(u8"\xF0\x9F\x98\x8E");
+	restart_btn_label->set_label(u8"\xF0\x9F\x98\x8E");
 }
 
 void MainWnd::onDefeat() {
 
-	setRestartBtnText(u8"\xF0\x9F\x98\xA9");
+	restart_btn_label->set_label(u8"\xF0\x9F\x98\xA9");
 }
 
 void MainWnd::onReset() {
 
-	setRestartBtnText(u8"\xF0\x9F\x98\x90");
+	restart_btn_label->set_label(u8"\xF0\x9F\x98\x90");
 	counter_label.set_label(Glib::ustring::sprintf("%d/%d", 0, mines_count));
 }
 

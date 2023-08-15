@@ -26,7 +26,6 @@ class MainWnd : public Gtk::Window, public INotifier {
 	void setResizeConstraints(double ratio, bool def_size = false);
 	void initMenu();
 	static inline void setFontSize(Widget *widget);
-	inline void setRestartBtnText(const char *text);
 
 protected:
 	void onRestartBtnClicked();
@@ -59,11 +58,4 @@ void MainWnd::setFontSize(Widget *widget) {
 	auto font = context->get_font_description();
 	font.set_size(DEF_LABELS_FONT_SIZE * PANGO_SCALE);
 	context->set_font_description(font);
-}
-
-void MainWnd::setRestartBtnText(const char *text) {
-
-	assert (restart_btn_label);
-	assert (text);
-	restart_btn_label->set_label(text);
 }
