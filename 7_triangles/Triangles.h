@@ -25,10 +25,10 @@ public:
 	Triangles &operator=(const Triangles& obj) = delete;
 	Triangles &operator=(Triangles&& obj) = delete;
 
-	void reset();
 	inline size_t getCellsCount() const;
 	void onCellClick(size_t index);
 	void undo();
+	void reset();
 };
 
 //*******************************************

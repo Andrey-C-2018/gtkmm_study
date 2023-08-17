@@ -10,22 +10,6 @@ Triangles::Triangles(ICellsView *view_) : view(view_) {
 	std::fill_n(cells, TOTAL_SIZE, BLANK);
 }
 
-void Triangles::reset() {
-
-	std::fill_n(cells, TRIANGLES_COUNT, LEFT);
-	for (size_t i = 0; i < TRIANGLES_COUNT; i++)
-		view->placeLeftTriangle(i);
-
-	std::fill_n(cells + TRIANGLES_COUNT, TOTAL_SIZE - 2 * TRIANGLES_COUNT, BLANK);
-	for (size_t i = TRIANGLES_COUNT; i < TOTAL_SIZE - TRIANGLES_COUNT; i++)
-		view->placeBlank(i);
-
-	std::fill_n(cells + TOTAL_SIZE - TRIANGLES_COUNT, TRIANGLES_COUNT, RIGHT);
-	for (size_t i = TOTAL_SIZE - TRIANGLES_COUNT; i < TOTAL_SIZE; i++)
-		view->placeRightTriangle(i);
-	history = {};
-}
-
 void Triangles::onCellClick(size_t index) {
 
 	assert (index < TOTAL_SIZE);
@@ -64,4 +48,20 @@ void Triangles::undo() {
 		view->swapCells(move.first, move.second);
 		std::swap(cells[move.first], cells[move.second]);
 	}
+}
+
+void Triangles::reset() {
+
+	std::fill_n(cells, TRIANGLES_COUNT, LEFT);
+	for (size_t i = 0; i < TRIANGLES_COUNT; i++)
+		view->placeLeftTriangle(i);
+
+	std::fill_n(cells + TRIANGLES_COUNT, TOTAL_SIZE - 2 * TRIANGLES_COUNT, BLANK);
+	for (size_t i = TRIANGLES_COUNT; i < TOTAL_SIZE - TRIANGLES_COUNT; i++)
+		view->placeBlank(i);
+
+	std::fill_n(cells + TOTAL_SIZE - TRIANGLES_COUNT, TRIANGLES_COUNT, RIGHT);
+	for (size_t i = TOTAL_SIZE - TRIANGLES_COUNT; i < TOTAL_SIZE; i++)
+		view->placeRightTriangle(i);
+	history = {};
 }

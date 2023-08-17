@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(triangles VERSION 0.3 LANGUAGES CXX)
+project(triangles VERSION 0.5 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -45,7 +45,7 @@ add_executable(triangles main.cpp
 		Frame.cpp Frame.h
 		Triangles.cpp Triangles.h
 		ICellsView.h
-	    ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp)
+	    ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp Solver.cpp Solver.h Field.cpp Field.h)
 
 set_target_properties(triangles PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 set_source_files_properties(
