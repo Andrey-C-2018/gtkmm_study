@@ -15,6 +15,7 @@ class Frame : public Gtk::Window, public ICellsView {
 
 protected:
 	void onButtonClick(size_t index);
+	bool onKeyPress(GdkEventKey* key_event);
 
 public:
 	Frame();

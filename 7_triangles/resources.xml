@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/">
-    <file>res/left.png</file>
-    <file>res/right.png</file>
+    <file>res/left.svg</file>
+    <file>res/right.svg</file>
     <file>res/blank.svg</file>
   </gresource>
 </gresources>

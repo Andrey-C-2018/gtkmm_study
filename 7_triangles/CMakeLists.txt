@@ -31,9 +31,9 @@ add_custom_command(
         VERBATIM
         MAIN_DEPENDENCY resources.xml
         DEPENDS
-        ${CMAKE_SOURCE_DIR}/res/left.png
+        ${CMAKE_SOURCE_DIR}/res/left.svg
 		${CMAKE_SOURCE_DIR}/res/blank.svg
-		${CMAKE_SOURCE_DIR}/res/right.png
+		${CMAKE_SOURCE_DIR}/res/right.svg
 )
 
 add_custom_target(

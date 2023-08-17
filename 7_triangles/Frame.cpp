@@ -11,9 +11,11 @@ Frame::Frame() : triangles(this) {
 	set_default_size(300, 50);
 	set_title("Triangles");
 
+	signal_key_press_event().connect(sigc::mem_fun(*this, &Frame::onKeyPress));
+
 	Frame::add(box);
-	left = Gdk::Pixbuf::create_from_resource("/res/left.png");
-	right = Gdk::Pixbuf::create_from_resource("/res/right.png");
+	left = Gdk::Pixbuf::create_from_resource("/res/left.svg");
+	right = Gdk::Pixbuf::create_from_resource("/res/right.svg");
 	blank = Gdk::Pixbuf::create_from_resource("/res/blank.svg");
 	left = left->scale_simple(DEF_SIZE, DEF_SIZE, Gdk::INTERP_BILINEAR);
 	right = right->scale_simple(DEF_SIZE, DEF_SIZE, Gdk::INTERP_BILINEAR);
@@ -24,6 +26,7 @@ Frame::Frame() : triangles(this) {
 	images.resize(count);
 	for (size_t i = 0; i < count; i++) {
 		buttons[i].set_icon_widget(images[i]);
+		buttons[i].set_can_focus(false);
 		box.pack_start(buttons[i], Gtk::PACK_SHRINK);
 		buttons[i].signal_clicked().connect(sigc::bind<size_t>(
 				sigc::mem_fun(*this, &Frame::onButtonClick), i));
@@ -68,6 +71,17 @@ void Frame::swapCells(size_t l, size_t r) {
 	auto rpix = images[r].get_pixbuf();
 	images[l].set(rpix);
 	images[r].set(lpix);
+}
+
+bool Frame::onKeyPress(GdkEventKey* event) {
+
+	switch (event->keyval) {
+		case 'u': triangles.undo();
+			break;
+
+		case 'r': triangles.reset();
+	}
+	return true;
 }
 
 Frame::~Frame() = default;

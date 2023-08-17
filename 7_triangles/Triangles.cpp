@@ -7,28 +7,23 @@ Triangles::Triangles(ICellsView *view_) : view(view_) {
 
 	assert (view);
 	assert (TOTAL_SIZE > TRIANGLES_COUNT);
-
-	std::fill_n(cells, TRIANGLES_COUNT, LEFT);
-	std::fill_n(cells + TRIANGLES_COUNT, TOTAL_SIZE - 2 * TRIANGLES_COUNT, BLANK);
-	std::fill_n(cells + TOTAL_SIZE - TRIANGLES_COUNT, TRIANGLES_COUNT, RIGHT);
+	std::fill_n(cells, TOTAL_SIZE, BLANK);
 }
 
 void Triangles::reset() {
 
-	for (size_t i = 0; i < TOTAL_SIZE; i++) {
-		switch (cells[i]) {
-			case LEFT:
-				view->placeLeftTriangle(i);
-				break;
+	std::fill_n(cells, TRIANGLES_COUNT, LEFT);
+	for (size_t i = 0; i < TRIANGLES_COUNT; i++)
+		view->placeLeftTriangle(i);
 
-			case BLANK:
-				view->placeBlank(i);
-				break;
+	std::fill_n(cells + TRIANGLES_COUNT, TOTAL_SIZE - 2 * TRIANGLES_COUNT, BLANK);
+	for (size_t i = TRIANGLES_COUNT; i < TOTAL_SIZE - TRIANGLES_COUNT; i++)
+		view->placeBlank(i);
 
-			case RIGHT:
-				view->placeRightTriangle(i);
-		}
-	}
+	std::fill_n(cells + TOTAL_SIZE - TRIANGLES_COUNT, TRIANGLES_COUNT, RIGHT);
+	for (size_t i = TOTAL_SIZE - TRIANGLES_COUNT; i < TOTAL_SIZE; i++)
+		view->placeRightTriangle(i);
+	history = {};
 }
 
 void Triangles::onCellClick(size_t index) {
@@ -57,4 +52,16 @@ void Triangles::swapCells(size_t l, size_t r) {
 
 	view->swapCells(l, r);
 	std::swap(cells[l], cells[r]);
+	history.emplace(l, r);
+}
+
+void Triangles::undo() {
+
+	if (!history.empty()) {
+		auto move = history.top();
+		history.pop();
+
+		view->swapCells(move.first, move.second);
+		std::swap(cells[move.first], cells[move.second]);
+	}
 }

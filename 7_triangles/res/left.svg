@@ -35,4 +35,9 @@
        x="0.10251082"
        y="0.1021117" />
   </g>
+  <path
+     id="path860"
+     style="fill:#00abff;stroke:#000000;stroke-width:1.00000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
+     d="M 5.0292969 3.3984375 L 5.0292969 24.009766 L 5.0292969 44.621094 L 42.548828 24.009766 L 5.0292969 3.3984375 z "
+     transform="scale(0.26458333)" />
 </svg>

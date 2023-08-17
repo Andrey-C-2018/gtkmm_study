@@ -1,9 +1,10 @@
 #pragma once
 #include <cstddef>
+#include <stack>
 
 struct ICellsView;
 
-class Triangles {
+class Triangles final {
 	enum CellTypes {
 		LEFT, BLANK, RIGHT
 	};
@@ -12,6 +13,7 @@ class Triangles {
 
 	int cells[TOTAL_SIZE]{};
 	ICellsView *view;
+	std::stack<std::pair<size_t, size_t>> history;
 
 	void swapCells(size_t l, size_t r);
 
@@ -26,6 +28,7 @@ public:
 	void reset();
 	inline size_t getCellsCount() const;
 	void onCellClick(size_t index);
+	void undo();
 };
 
 //*******************************************
