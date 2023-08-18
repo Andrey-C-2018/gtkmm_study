@@ -5,22 +5,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-#######################################
-
-find_package(PkgConfig REQUIRED)
-if(NOT PKG_CONFIG_FOUND)
-	message(FATAL_ERROR "no Pkg-Config on the system")
-	return()
-endif()
-
-pkg_check_modules(GTKMM3 REQUIRED gtkmm-3.0)
-if(NOT ${GTKMM3_FOUND})
-        message(FATAL_ERROR "the gtkmm library v3.0 is not found on the system")
-	return()
-endif()
-message(STATUS "gtkmm include path: ${GTKMM3_INCLUDE_DIRS}")
-
-#######################################
+add_subdirectory(src src_build)
+add_subdirectory(tests tests_build)
 
 find_program(GLIB_COMPILE_RESOURCES NAMES glib-compile-resources REQUIRED)
 add_custom_command(
@@ -42,18 +28,15 @@ add_custom_target(
 )
 
 add_executable(triangles main.cpp
-		Frame.cpp Frame.h
-		Triangles.cpp Triangles.h
-		ICellsView.h
-	    ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp Solver.cpp Solver.h Field.cpp Field.h)
+       	    ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp)
 
 set_target_properties(triangles PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 set_source_files_properties(
         ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp
         PROPERTIES GENERATED TRUE
 )
-add_dependencies(${PROJECT_NAME} triangles-res)
+add_dependencies(${PROJECT_NAME} triangles_lib triangles-res)
 
 include_directories(${GTKMM3_INCLUDE_DIRS})
-target_link_libraries(triangles ${GTKMM3_LIBRARIES})
+target_link_libraries(triangles triangles_lib ${GTKMM3_LIBRARIES})
 add_definitions(${GTKMM3_CFLAGS_OTHER})

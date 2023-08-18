@@ -8,7 +8,7 @@ class Solver final {
 	struct Node {
 		Field field;
 		size_t moves_count;
-		std::pair<size_t, size_t> rev_move;
+		Move rev_move;
 		std::shared_ptr<const Node> prev;
 
 		inline bool operator<(const Node &obj) const {
@@ -28,6 +28,5 @@ public:
 	Solver &operator=(Solver &&obj) = default;
 
 	bool solve(const Field &initial_field);
-	std::pair<size_t, size_t> getNextStep();
-	static std::pair<size_t, size_t> finalStep();
+	Move getNextStep();
 };

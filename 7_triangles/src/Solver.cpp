@@ -7,7 +7,7 @@ Solver::Solver() = default;
 bool Solver::solve(const Field &initial_field) {
 
 	std::priority_queue<std::shared_ptr<Node>> pq;
-	Node initial_node{initial_field, 0, {0,0}};
+	Node initial_node{initial_field, 0, Move::createEmpty()};
 
 	pq.emplace(std::make_shared<Node>(std::move(initial_node)));
 	while (!pq.empty()) {
@@ -21,7 +21,7 @@ bool Solver::solve(const Field &initial_field) {
 
 		for (size_t i = 0; i < node->field.size(); i++) {
 			auto move = node->field.calcCellMove(i);
-			if (move.first != move.second) {
+			if (!move.empty()) {
 				Node new_node{node->field, node->moves_count + 1, \
 							move, node};
 				new_node.field.makeMove(move);
@@ -32,17 +32,13 @@ bool Solver::solve(const Field &initial_field) {
 	return false;
 }
 
-std::pair<size_t, size_t> Solver::getNextStep() {
+Move Solver::getNextStep() {
 
 	assert (curr);
 	auto move = curr->rev_move;
-	assert (move.first != move.second);
+	assert ((!curr->moves_count && move.empty() && !curr->prev) || \
+				curr->moves_count && !move.empty() && curr->prev);
 
 	curr = curr->prev;
 	return move;
-}
-
-std::pair<size_t, size_t> Solver::finalStep() {
-
-	return {0, 0};
 }
