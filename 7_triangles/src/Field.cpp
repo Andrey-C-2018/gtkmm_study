@@ -76,7 +76,7 @@ Move Field::calcCellMove(size_t index) const {
 	return Move::createEmpty();
 }
 
-Move Field::makeMove(size_t index) {
+Move Field::tryMove(size_t index) {
 
 	auto move = calcCellMove(index);
 	if (!move.empty())
@@ -92,7 +92,7 @@ void Field::makeMove(const Move &move) {
 	std::swap(cells[move.left()], cells[move.right()]);
 }
 
-bool Field::moveValid(const Move &move) {
+bool Field::moveValid(const Move &move) const {
 
 	if (move.empty() || move.left() > move.right() || \
 		move.left() >= cells.size() || move.right() >= cells.size() || \

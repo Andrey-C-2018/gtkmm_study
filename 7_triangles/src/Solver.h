@@ -10,13 +10,8 @@ class Solver final {
 		size_t moves_count;
 		Move rev_move;
 		std::shared_ptr<const Node> prev;
-
-		bool operator<(const Node &obj) const {
-
-			return field.distFromCompletion() + moves_count <
-					obj.field.distFromCompletion() + obj.moves_count;
-		}
 	};
+	typedef std::shared_ptr<Node> NodePtr;
 	std::shared_ptr<const Node> curr;
 
 public:
@@ -28,5 +23,6 @@ public:
 	Solver &operator=(Solver &&obj) = default;
 
 	bool solve(const Field &initial_field);
-	Move getNextStep();
+	Field getLastField() const;
+	Move nextMove();
 };

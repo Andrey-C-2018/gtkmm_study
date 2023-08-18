@@ -10,7 +10,7 @@ Interactor::Interactor(ICellsView *view_) : view(view_) {
 void Interactor::onCellClick(size_t index) {
 
 	assert (index < field.size());
-	auto move = field.makeMove(index);
+	auto move = field.tryMove(index);
 	if (!move.empty()) {
 		view->swapCells(move.left(), move.right());
 		history.emplace(move.left(), move.right());

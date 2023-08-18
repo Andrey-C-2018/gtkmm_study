@@ -56,8 +56,8 @@ SUITE(FieldTests) {
 		auto move3 = field.calcCellMove(4);
 		CHECK(move3.empty());
 
-		field.makeMove(1);
-		field.makeMove(0);
+		field.tryMove(1);
+		field.tryMove(0);
 		CHECK_EQUAL(" >><<", field.toString());
 		for (size_t i = 1; i < 5; i++) {
 			auto m = field.calcCellMove(2);
@@ -69,11 +69,11 @@ SUITE(FieldTests) {
 
 		Field field(3, 1);
 		CHECK_EQUAL("> <", field.toString());
-		field.makeMove(0);
+		field.tryMove(0);
 		CHECK_EQUAL(" ><", field.toString());
-		field.makeMove(2);
+		field.tryMove(2);
 		CHECK_EQUAL("<> ", field.toString());
-		field.makeMove(1);
+		field.tryMove(1);
 		CHECK_EQUAL("< >", field.toString());
 		CHECK(field.completed());
 	}
@@ -82,21 +82,21 @@ SUITE(FieldTests) {
 
 		Field field(5, 2);
 		CHECK_EQUAL(">> <<", field.toString());
-		field.makeMove(1);
+		field.tryMove(1);
 		CHECK_EQUAL("> ><<", field.toString());
-		field.makeMove(3);
+		field.tryMove(3);
 		CHECK_EQUAL("><> <", field.toString());
-		field.makeMove(4);
+		field.tryMove(4);
 		CHECK_EQUAL("><>< ", field.toString());
-		field.makeMove(2);
+		field.tryMove(2);
 		CHECK_EQUAL(">< <>", field.toString());
-		field.makeMove(0);
+		field.tryMove(0);
 		CHECK_EQUAL(" <><>", field.toString());
-		field.makeMove(1);
+		field.tryMove(1);
 		CHECK_EQUAL("< ><>", field.toString());
-		field.makeMove(3);
+		field.tryMove(3);
 		CHECK_EQUAL("<<> >", field.toString());
-		field.makeMove(2);
+		field.tryMove(2);
 		CHECK_EQUAL("<< >>", field.toString());
 		CHECK(field.completed());
 	}
@@ -105,11 +105,11 @@ SUITE(FieldTests) {
 
 		Field field(3, 1); // > <
 		CHECK_EQUAL(4, field.distFromCompletion());
-		field.makeMove(0); //  ><
+		field.tryMove(0); //  ><
 		CHECK_EQUAL(3, field.distFromCompletion());
-		field.makeMove(2); // <>
+		field.tryMove(2); // <>
 		CHECK_EQUAL(1, field.distFromCompletion());
-		field.makeMove(1); // < >
+		field.tryMove(1); // < >
 		CHECK_EQUAL(0, field.distFromCompletion());
 	}
 }

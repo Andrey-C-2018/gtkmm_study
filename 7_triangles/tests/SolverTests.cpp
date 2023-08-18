@@ -12,8 +12,7 @@ SUITE(SolverTests) {
 		Solver solver;
 
 		CHECK(solver.solve(field));
-		auto move = solver.getNextStep();
-		CHECK(!move.empty());
+		CHECK(!solver.nextMove().empty());
 	}
 
 	TEST(getSolvingSequence3) {
@@ -40,16 +39,17 @@ SUITE(SolverTests) {
 
 void solvingSequence(Field &field) {
 
-	std::cout << field.toString() << std::endl;
 	Solver solver;
+	CHECK(solver.solve(field));
 
-	solver.solve(field);
-	auto move = solver.getNextStep();
+	field = solver.getLastField();
+	CHECK(field.completed());
+	std::cout << field.toString() << std::endl;
+
+	auto move = solver.nextMove();
 	while (!move.empty()) {
-		CHECK(field.moveValid(move));
 		field.makeMove(move);
 		std::cout << field.toString() << std::endl;
-		move = solver.getNextStep();
+		move = solver.nextMove();
 	}
-	CHECK(field.completed());
 }

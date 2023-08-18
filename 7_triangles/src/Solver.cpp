@@ -1,12 +1,18 @@
 #include "Solver.h"
 #include <cassert>
+#include <list>
 #include <queue>
 
 Solver::Solver() = default;
 
 bool Solver::solve(const Field &initial_field) {
 
-	std::priority_queue<std::shared_ptr<Node>> pq;
+	auto comparator = [](const NodePtr &l, const NodePtr &r) {
+
+		return l->field.distFromCompletion() + l->moves_count <
+			   r->field.distFromCompletion() + r->moves_count;
+	};
+	std::priority_queue<NodePtr, std::vector<NodePtr>, decltype(comparator)> pq(comparator);
 	Node initial_node{initial_field, 0, Move::createEmpty()};
 
 	pq.emplace(std::make_shared<Node>(std::move(initial_node)));
@@ -34,7 +40,13 @@ bool Solver::solve(const Field &initial_field) {
 	return false;
 }
 
-Move Solver::getNextStep() {
+Field Solver::getLastField() const {
+
+	assert (curr);
+	return curr->field;
+}
+
+Move Solver::nextMove() {
 
 	assert (curr);
 	auto move = curr->rev_move;

@@ -37,8 +37,8 @@ public:
 	inline size_t size() const;
 
 	Move calcCellMove(size_t index) const;
-	bool moveValid(const Move &move);
-	Move makeMove(size_t index);
+	bool moveValid(const Move &move) const;
+	Move tryMove(size_t index);
 	void makeMove(const Move &move);
 
 	std::string toString();
