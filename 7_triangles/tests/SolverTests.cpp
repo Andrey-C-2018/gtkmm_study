@@ -19,14 +19,14 @@ SUITE(SolverTests) {
 	TEST(getSolvingSequence3) {
 
 		Field field(3, 1);
-		std::cout << "3 cells:\n";
+		std::cout << "3 field:\n";
 		solvingSequence(field);
 	}
 
 	TEST(getSolvingSequence5) {
 
 		Field field(5, 2);
-		std::cout << "5 cells:\n";
+		std::cout << "5 field:\n";
 		solvingSequence(field);
 	}
 

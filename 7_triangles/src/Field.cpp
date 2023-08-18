@@ -1,20 +1,19 @@
-#include <cassert>
 #include <algorithm>
 #include "Field.h"
 
 Field::Field() : total_size(DEF_SIZE), triangles_count(DEF_TRIANGLES) {
 
-	init();
+	reset();
 }
 
 Field::Field(size_t total_size_, size_t triangles_count_) : \
 				total_size(total_size_), triangles_count(triangles_count_) {
 
 	assert(2 * triangles_count < total_size);
-	init();
+	reset();
 }
 
-void Field::init() {
+void Field::reset() {
 
 	cells.reserve(total_size);
 
@@ -88,7 +87,8 @@ Move Field::makeMove(size_t index) {
 
 void Field::makeMove(const Move &move) {
 
-	assert (moveValid(move));
+	assert (move.left() < cells.size());
+	assert (move.right() < cells.size());
 	std::swap(cells[move.left()], cells[move.right()]);
 }
 

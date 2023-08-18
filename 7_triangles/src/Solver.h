@@ -11,7 +11,7 @@ class Solver final {
 		Move rev_move;
 		std::shared_ptr<const Node> prev;
 
-		inline bool operator<(const Node &obj) const {
+		bool operator<(const Node &obj) const {
 
 			return field.distFromCompletion() + moves_count <
 					obj.field.distFromCompletion() + obj.moves_count;

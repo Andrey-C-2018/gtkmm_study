@@ -24,6 +24,8 @@ bool Solver::solve(const Field &initial_field) {
 			if (!move.empty()) {
 				Node new_node{node->field, node->moves_count + 1, \
 							move, node};
+
+				assert (new_node.field.moveValid(move));
 				new_node.field.makeMove(move);
 				pq.emplace(std::make_shared<Node>(std::move(new_node)));
 			}

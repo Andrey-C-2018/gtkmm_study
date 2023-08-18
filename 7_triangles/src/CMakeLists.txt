@@ -22,8 +22,8 @@ message(STATUS "gtkmm include path: ${GTKMM3_INCLUDE_DIRS}")
 
 #######################################
 
-add_library(triangles_lib Frame.cpp Frame.h
-       		Triangles.cpp Triangles.h
+add_library(triangles_lib ViewController.cpp ViewController.h
+        Interactor.cpp Interactor.h
 			ICellsView.h
 			Solver.cpp Solver.h
 			Field.cpp Field.h Move.h)

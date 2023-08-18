@@ -1,19 +1,19 @@
 #include <cassert>
 #include <gdkmm/pixbuf.h>
 #include <gtkmm/image.h>
-#include "Frame.h"
+#include "ViewController.h"
 
 constexpr size_t DEF_SIZE = 96;
 
-Frame::Frame() : triangles(this) {
+ViewController::ViewController() : interactor(this) {
 
 	set_border_width(10);
 	set_default_size(300, 50);
 	set_title("Triangles");
 
-	signal_key_press_event().connect(sigc::mem_fun(*this, &Frame::onKeyPress));
+	signal_key_press_event().connect(sigc::mem_fun(*this, &ViewController::onKeyPress));
 
-	Frame::add(box);
+	ViewController::add(box);
 	left = Gdk::Pixbuf::create_from_resource("/res/left.svg");
 	right = Gdk::Pixbuf::create_from_resource("/res/right.svg");
 	blank = Gdk::Pixbuf::create_from_resource("/res/blank.svg");
@@ -21,7 +21,7 @@ Frame::Frame() : triangles(this) {
 	right = right->scale_simple(DEF_SIZE, DEF_SIZE, Gdk::INTERP_BILINEAR);
 	blank = blank->scale_simple(DEF_SIZE, DEF_SIZE, Gdk::INTERP_BILINEAR);
 
-	size_t count = triangles.getCellsCount();
+	size_t count = interactor.getCellsCount();
 	buttons.resize(count);
 	images.resize(count);
 	for (size_t i = 0; i < count; i++) {
@@ -29,40 +29,40 @@ Frame::Frame() : triangles(this) {
 		buttons[i].set_can_focus(false);
 		box.pack_start(buttons[i], Gtk::PACK_SHRINK);
 		buttons[i].signal_clicked().connect(sigc::bind<size_t>(
-				sigc::mem_fun(*this, &Frame::onButtonClick), i));
+				sigc::mem_fun(*this, &ViewController::onButtonClick), i));
 	}
 
-	triangles.reset();
+	interactor.reset();
 
 	box.show();
 	box.show_all_children();
 }
 
-void Frame::onButtonClick(size_t index) {
+void ViewController::onButtonClick(size_t index) {
 
 	assert (index < buttons.size());
-	triangles.onCellClick(index);
+	interactor.onCellClick(index);
 }
 
-void Frame::placeLeftTriangle(size_t index) {
+void ViewController::placeLeftTriangle(size_t index) {
 
 	assert (index < buttons.size());
 	images[index].set(left);
 }
 
-void Frame::placeBlank(size_t index) {
+void ViewController::placeBlank(size_t index) {
 
 	assert (index < buttons.size());
 	images[index].set(blank);
 }
 
-void Frame::placeRightTriangle(size_t index) {
+void ViewController::placeRightTriangle(size_t index) {
 
 	assert (index < buttons.size());
 	images[index].set(right);
 }
 
-void Frame::swapCells(size_t l, size_t r) {
+void ViewController::swapCells(size_t l, size_t r) {
 
 	assert (l < buttons.size());
 	assert (r < buttons.size());
@@ -73,15 +73,15 @@ void Frame::swapCells(size_t l, size_t r) {
 	images[r].set(lpix);
 }
 
-bool Frame::onKeyPress(GdkEventKey* event) {
+bool ViewController::onKeyPress(GdkEventKey* event) {
 
 	switch (event->keyval) {
-		case 'u': triangles.undo();
+		case 'u': interactor.undo();
 			break;
 
-		case 'r': triangles.reset();
+		case 'r': interactor.reset();
 	}
 	return true;
 }
 
-Frame::~Frame() = default;
+ViewController::~ViewController() = default;
