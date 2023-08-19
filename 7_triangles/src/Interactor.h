@@ -1,6 +1,7 @@
 #pragma once
 #include <stack>
 #include "Field.h"
+#include "Solver.h"
 
 struct ICellsView;
 
@@ -8,6 +9,7 @@ class Interactor final {
 	Field field;
 	ICellsView *view;
 	std::stack<Move> history;
+	Solver solver;
 
 public:
 	explicit Interactor(ICellsView *view_);
@@ -20,6 +22,7 @@ public:
 	inline size_t getCellsCount() const;
 	void onCellClick(size_t index);
 	void undo();
+	void hint();
 	void reset();
 };
 

@@ -76,10 +76,9 @@ void ViewController::swapCells(size_t l, size_t r) {
 bool ViewController::onKeyPress(GdkEventKey* event) {
 
 	switch (event->keyval) {
-		case 'u': interactor.undo();
-			break;
-
-		case 'r': interactor.reset();
+		case 'u': interactor.undo(); break;
+		case 'r': interactor.reset(); break;
+		case 'h': interactor.hint();
 	}
 	return true;
 }

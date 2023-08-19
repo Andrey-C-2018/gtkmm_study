@@ -15,6 +15,17 @@ SUITE(SolverTests) {
 		CHECK(!solver.nextMove().empty());
 	}
 
+	TEST(unsolvable) {
+
+		Field field(5, 2);
+		field.tryMove(1);
+		field.tryMove(0);
+		CHECK_EQUAL(" >><<", field.toString());
+		Solver solver;
+
+		CHECK(!solver.solve(field));
+	}
+
 	TEST(getSolvingSequence3) {
 
 		Field field(3, 1);
@@ -41,9 +52,6 @@ void solvingSequence(Field &field) {
 
 	Solver solver;
 	CHECK(solver.solve(field));
-
-	field = solver.getLastField();
-	CHECK(field.completed());
 	std::cout << field.toString() << std::endl;
 
 	auto move = solver.nextMove();
@@ -52,4 +60,5 @@ void solvingSequence(Field &field) {
 		std::cout << field.toString() << std::endl;
 		move = solver.nextMove();
 	}
+	CHECK(field.completed());
 }

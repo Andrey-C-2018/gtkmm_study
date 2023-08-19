@@ -1,9 +1,8 @@
 #include "Solver.h"
 #include <cassert>
-#include <list>
 #include <queue>
 
-Solver::Solver() = default;
+Solver::Solver() : pos(completed_seq.cend()) { }
 
 bool Solver::solve(const Field &initial_field) {
 
@@ -20,7 +19,7 @@ bool Solver::solve(const Field &initial_field) {
 		std::shared_ptr<const Node> node = pq.top();
 
 		if (node->field.completed()) {
-			curr = node;
+			createCompletedSequence(node);
 			return true;
 		}
 		pq.pop();
@@ -40,19 +39,12 @@ bool Solver::solve(const Field &initial_field) {
 	return false;
 }
 
-Field Solver::getLastField() const {
+void Solver::createCompletedSequence(ConstNodePtr node_ptr) {
 
-	assert (curr);
-	return curr->field;
-}
-
-Move Solver::nextMove() {
-
-	assert (curr);
-	auto move = curr->rev_move;
-	assert ((!curr->moves_count && move.empty() && !curr->prev) || \
-				curr->moves_count && !move.empty() && curr->prev);
-
-	curr = curr->prev;
-	return move;
+	completed_seq.clear();
+	while (node_ptr->prev) {
+		completed_seq.push_front(node_ptr->rev_move);
+		node_ptr = node_ptr->prev;
+	}
+	pos = completed_seq.cbegin();
 }

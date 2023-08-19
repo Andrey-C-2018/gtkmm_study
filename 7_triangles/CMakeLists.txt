@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(triangles VERSION 0.5 LANGUAGES CXX)
+project(triangles VERSION 0.8 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()

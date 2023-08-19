@@ -13,7 +13,13 @@ void Interactor::onCellClick(size_t index) {
 	auto move = field.tryMove(index);
 	if (!move.empty()) {
 		view->swapCells(move.left(), move.right());
-		history.emplace(move.left(), move.right());
+		history.push(move);
+
+		if (solver.solved()) {
+			auto move_hint = solver.nextMove();
+			if (move != move_hint)
+				solver.reset();
+		}
 	}
 }
 
@@ -25,6 +31,29 @@ void Interactor::undo() {
 
 		view->swapCells(move.left(), move.right());
 		field.makeMove(move);
+
+		if (solver.solved()) {
+			if (solver.atEnd())
+				solver.reset();
+			else
+				solver.gotoPrevMove();
+		}
+	}
+}
+
+void Interactor::hint() {
+
+	bool solved = solver.solved();
+	if (!solved)
+		solved = solver.solve(field);
+
+	if (solved && !solver.atEnd()) {
+		auto move = solver.nextMove();
+		assert (field.moveValid(move));
+
+		view->swapCells(move.left(), move.right());
+		field.makeMove(move);
+		history.push(move);
 	}
 }
 
@@ -41,4 +70,5 @@ void Interactor::reset() {
 		}
 	}
 	history = {};
+	solver.reset();
 }
