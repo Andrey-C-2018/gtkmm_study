@@ -1,8 +1,8 @@
 #include <cassert>
 #include "Interactor.h"
-#include "ICellsView.h"
+#include "IView.h"
 
-Interactor::Interactor(ICellsView *view_) : view(view_) {
+Interactor::Interactor(IView *view_) : view(view_) {
 
 	assert (view);
 }
@@ -20,6 +20,8 @@ void Interactor::onCellClick(size_t index) {
 			if (move != move_hint)
 				solver.reset();
 		}
+		if (field.completed())
+			view->setStatusCompleted();
 	}
 }
 
@@ -38,6 +40,7 @@ void Interactor::undo() {
 			else
 				solver.gotoPrevMove();
 		}
+		view->clearStatus();
 	}
 }
 
@@ -47,13 +50,20 @@ void Interactor::hint() {
 	if (!solved)
 		solved = solver.solve(field);
 
-	if (solved && !solver.atEnd()) {
-		auto move = solver.nextMove();
-		assert (field.moveValid(move));
+	if (!solved)
+		view->setStatusStuck();
+	else {
+		if (!solver.atEnd()) {
+			auto move = solver.nextMove();
+			assert (field.moveValid(move));
 
-		view->swapCells(move.left(), move.right());
-		field.makeMove(move);
-		history.push(move);
+			view->swapCells(move.left(), move.right());
+			field.makeMove(move);
+			history.push(move);
+
+			if (field.completed())
+				view->setStatusCompleted();
+		}
 	}
 }
 
@@ -71,4 +81,5 @@ void Interactor::reset() {
 	}
 	history = {};
 	solver.reset();
+	view->clearStatus();
 }

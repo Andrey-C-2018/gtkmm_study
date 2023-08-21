@@ -3,16 +3,16 @@
 #include "Field.h"
 #include "Solver.h"
 
-struct ICellsView;
+struct IView;
 
 class Interactor final {
 	Field field;
-	ICellsView *view;
+	IView *view;
 	std::stack<Move> history;
 	Solver solver;
 
 public:
-	explicit Interactor(ICellsView *view_);
+	explicit Interactor(IView *view_);
 
 	Interactor(const Interactor& obj) = delete;
 	Interactor(Interactor&& obj) = delete;

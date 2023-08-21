@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(triangles_lib VERSION 0.8 LANGUAGES CXX)
+project(triangles_lib VERSION 1.0 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -24,7 +24,7 @@ message(STATUS "gtkmm include path: ${GTKMM3_INCLUDE_DIRS}")
 
 add_library(triangles_lib ViewController.cpp ViewController.h
         Interactor.cpp Interactor.h
-			ICellsView.h
+        IView.h
 			Solver.cpp Solver.h
 			Field.cpp Field.h Move.h)
 

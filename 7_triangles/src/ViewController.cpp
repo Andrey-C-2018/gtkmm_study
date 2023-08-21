@@ -13,7 +13,7 @@ ViewController::ViewController() : interactor(this) {
 
 	signal_key_press_event().connect(sigc::mem_fun(*this, &ViewController::onKeyPress));
 
-	ViewController::add(box);
+	ViewController::add(vbox);
 	left = Gdk::Pixbuf::create_from_resource("/res/left.svg");
 	right = Gdk::Pixbuf::create_from_resource("/res/right.svg");
 	blank = Gdk::Pixbuf::create_from_resource("/res/blank.svg");
@@ -21,21 +21,22 @@ ViewController::ViewController() : interactor(this) {
 	right = right->scale_simple(DEF_SIZE, DEF_SIZE, Gdk::INTERP_BILINEAR);
 	blank = blank->scale_simple(DEF_SIZE, DEF_SIZE, Gdk::INTERP_BILINEAR);
 
+	vbox.pack_start(hbox, Gtk::PACK_SHRINK);
 	size_t count = interactor.getCellsCount();
 	buttons.resize(count);
 	images.resize(count);
 	for (size_t i = 0; i < count; i++) {
 		buttons[i].set_icon_widget(images[i]);
 		buttons[i].set_can_focus(false);
-		box.pack_start(buttons[i], Gtk::PACK_SHRINK);
+		hbox.pack_start(buttons[i], Gtk::PACK_SHRINK);
 		buttons[i].signal_clicked().connect(sigc::bind<size_t>(
 				sigc::mem_fun(*this, &ViewController::onButtonClick), i));
 	}
-
 	interactor.reset();
 
-	box.show();
-	box.show_all_children();
+	vbox.pack_start(status_label, Gtk::PACK_SHRINK);
+	vbox.show();
+	vbox.show_all_children();
 }
 
 void ViewController::onButtonClick(size_t index) {
@@ -81,6 +82,23 @@ bool ViewController::onKeyPress(GdkEventKey* event) {
 		case 'h': interactor.hint();
 	}
 	return true;
+}
+
+void ViewController::clearStatus() {
+
+	status_label.set_label("");
+}
+
+void ViewController::setStatusCompleted() {
+
+	status_label.set_label("Completed");
+	status_label.override_color(Gdk::RGBA("green"), Gtk::STATE_FLAG_NORMAL);
+}
+
+void ViewController::setStatusStuck() {
+
+	status_label.set_label("Stuck");
+	status_label.override_color(Gdk::RGBA("red"), Gtk::STATE_FLAG_NORMAL);
 }
 
 ViewController::~ViewController() = default;
