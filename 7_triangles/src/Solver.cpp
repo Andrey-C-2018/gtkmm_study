@@ -8,7 +8,7 @@ bool Solver::solve(const Field &initial_field) {
 
 	auto comparator = [](const NodePtr &l, const NodePtr &r) {
 
-		return l->field.distFromCompletion() + l->moves_count <
+		return l->field.distFromCompletion() + l->moves_count >
 			   r->field.distFromCompletion() + r->moves_count;
 	};
 	std::priority_queue<NodePtr, std::vector<NodePtr>, decltype(comparator)> pq(comparator);
