@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(calc VERSION 0.1 LANGUAGES CXX)
+project(calc VERSION 0.2 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -19,6 +19,13 @@ if(NOT ${GTKMM3_FOUND})
 	return()
 endif()
 message(STATUS "gtkmm include path: ${GTKMM3_INCLUDE_DIRS}")
+
+pkg_check_modules(GMP REQUIRED gmp)
+if(NOT ${GMP_FOUND})
+	message(FATAL_ERROR "the gmp library is not found on the system")
+	return()
+endif()
+message(STATUS "gmp library added")
 
 #######################################
 
@@ -41,7 +48,7 @@ add_custom_target(
 
 add_executable(calc main.cpp
 		CalcWnd.cpp CalcWnd.h
-        ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp)
+        ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp Calculator.cpp Calculator.h Operations.h ICalculable.h IOperation.h UnaryOperation.cpp UnaryOperation.h BinaryOperation.cpp BinaryOperation.h Plus.cpp Plus.h Number.cpp Number.h)
 
 set_target_properties(calc PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 set_source_files_properties(
@@ -51,5 +58,6 @@ set_source_files_properties(
 add_dependencies(${PROJECT_NAME} calc-resource)
 
 include_directories(${GTKMM3_INCLUDE_DIRS})
-target_link_libraries(calc ${GTKMM3_LIBRARIES})
+include_directories(${GMP_INCLUDE_DIRS})
+target_link_libraries(calc ${GTKMM3_LIBRARIES} ${GMP_LIBRARIES})
 add_definitions(${GTKMM3_CFLAGS_OTHER})
