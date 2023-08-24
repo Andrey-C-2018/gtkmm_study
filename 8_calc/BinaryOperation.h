@@ -7,5 +7,7 @@ protected:
 
 public:
 	void addOperand(std::shared_ptr<ICalculable> op) override;
+	void setLastOperand(std::shared_ptr<ICalculable> op) override;
+
 	~BinaryOperation() override = default;
 };

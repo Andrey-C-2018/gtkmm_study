@@ -9,6 +9,5 @@ int Plus::getId() const {
 
 double Plus::calculate() {
 
-	assert (left);
-	return left->calculate() + (right ? right->calculate() : 0.0);
+	return (left ? left->calculate() : 0.0) + (right ? right->calculate() : 0.0);
 }

@@ -3,22 +3,28 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/button.h>
-#include "Calculator.h"
+#include "Interactor.h"
 
 class CalcWnd : public Gtk::Window {
 	constexpr static size_t NUMBERS_COUNT = 10;
+	constexpr static size_t DEF_FONT_SIZE = 18;
+
 	Gtk::Entry *output;
 	Gtk::Button *numeric_buttons[NUMBERS_COUNT]{};
+	Gtk::Button *dot_button, *sign_button;
 	Gtk::Button *plus_button;
 	Gtk::Button *clear_button, *backspace_button, *eq_button;
-	Calculator calc;
+	Interactor interactor;
+
+	static void setFontSize(Widget *widget);
 
 protected:
 	void numericButtonClicked(size_t number);
 	void operationButtonClicked();
+	void dotButtonClicked();
+	void signButtonClicked();
 	void clearButtonClicked();
 	void backspaceButtonClicked();
-	void dotButtonClicked();
 	void eqButtonClicked();
 
 public:
