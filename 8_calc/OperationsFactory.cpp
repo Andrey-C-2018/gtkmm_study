@@ -16,8 +16,9 @@ OperationsFactory::OperationsFactory() {
 	operations.emplace_back(std::make_unique<Plus>());
 	operations.emplace_back(std::make_unique<Minus>());
 	operations.emplace_back(std::make_unique<Mult>());
+	operations.emplace_back(std::make_unique<Div>());
 
-	const char codes[] = "+,-,*";
+	const char codes[] = "+,-,*,/";
 	char buffer[10];
 	const char *prev = codes, *p;
 	size_t index = 0;

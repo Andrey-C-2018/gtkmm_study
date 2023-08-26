@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(calc VERSION 0.5 LANGUAGES CXX)
+project(calc VERSION 0.6 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -48,7 +48,12 @@ add_custom_target(
 
 add_executable(calc main.cpp
 		CalcWnd.cpp CalcWnd.h
-        ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp Interactor.cpp Interactor.h IOperation.h Calc.cpp Calc.h OperationsFactory.cpp OperationsFactory.h BasicOperations.h BasicOperations.cpp)
+		Interactor.cpp Interactor.h
+		IOperation.h
+		Calc.cpp Calc.h
+		OperationsFactory.cpp OperationsFactory.h
+		BasicOperations.h BasicOperations.cpp
+        ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp)
 
 set_target_properties(calc PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 set_source_files_properties(

@@ -18,3 +18,9 @@ public:
 	double calculate(const double *params, size_t count) override;
 	~Mult() override = default;
 };
+
+class Div : public IOperation {
+public:
+	double calculate(const double *params, size_t count) override;
+	~Div() override = default;
+};
