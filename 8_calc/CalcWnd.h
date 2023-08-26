@@ -12,7 +12,7 @@ class CalcWnd : public Gtk::Window {
 	Gtk::Entry *output;
 	Gtk::Button *numeric_buttons[NUMBERS_COUNT]{};
 	Gtk::Button *dot_button, *sign_button;
-	Gtk::Button *plus_button;
+	Gtk::Button *plus_button, *minus_button, *mult_button;
 	Gtk::Button *clear_button, *backspace_button, *eq_button;
 	Interactor interactor;
 
@@ -20,7 +20,7 @@ class CalcWnd : public Gtk::Window {
 
 protected:
 	void numericButtonClicked(size_t number);
-	void operationButtonClicked();
+	void operationButtonClicked(const char *op);
 	void dotButtonClicked();
 	void signButtonClicked();
 	void clearButtonClicked();

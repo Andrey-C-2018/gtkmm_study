@@ -1,7 +1,7 @@
 #include <cassert>
 #include "Calc.h"
-#include "Plus.h"
 #include "OperationsFactory.h"
+#include "IOperation.h"
 
 Calc::Calc() : op(nullptr), count(0), calculated(false) { }
 

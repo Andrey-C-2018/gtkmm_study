@@ -1,6 +1,8 @@
 #include <cassert>
 #include "CalcWnd.h"
 
+constexpr const char *operation_ids[] = {"+", "-", "*"};
+
 void CalcWnd::setFontSize(Widget *widget) {
 
 	auto context = widget->get_pango_context();
@@ -10,7 +12,8 @@ void CalcWnd::setFontSize(Widget *widget) {
 }
 
 CalcWnd::CalcWnd(BaseObjectType* obj, Glib::RefPtr<Gtk::Builder> const& builder) : \
-					Gtk::Window(obj), output(nullptr), plus_button(nullptr), \
+					Gtk::Window(obj), output(nullptr), \
+					plus_button(nullptr), minus_button(nullptr), mult_button(nullptr), \
 					dot_button(nullptr), sign_button(nullptr), \
 					clear_button(nullptr), backspace_button(nullptr), eq_button(nullptr) {
 
@@ -28,10 +31,13 @@ CalcWnd::CalcWnd(BaseObjectType* obj, Glib::RefPtr<Gtk::Builder> const& builder)
 		setFontSize(numeric_buttons[i]->get_child());
 	}
 
-	builder->get_widget("+", plus_button);
-	setFontSize(plus_button->get_child());
-	plus_button->signal_clicked().connect(sigc::mem_fun(*this, \
-                                                        &CalcWnd::operationButtonClicked));
+	Gtk::Button *operation_buttons[] = {plus_button, minus_button, mult_button};
+	for (size_t i = 0; i < sizeof operation_ids / sizeof(const char*); i++) {
+		builder->get_widget(operation_ids[i], operation_buttons[i]);
+		setFontSize(operation_buttons[i]->get_child());
+		operation_buttons[i]->signal_clicked().connect(sigc::bind<const char*>(
+		sigc::mem_fun(*this, &CalcWnd::operationButtonClicked), operation_ids[i]));
+	}
 	builder->get_widget(".", dot_button);
 	setFontSize(dot_button->get_child());
 	dot_button->signal_clicked().connect(sigc::mem_fun(*this, \
@@ -70,9 +76,9 @@ void CalcWnd::signButtonClicked() {
 	output->set_text(interactor.toggleSign());
 }
 
-void CalcWnd::operationButtonClicked() {
+void CalcWnd::operationButtonClicked(const char *op) {
 
-	interactor.addOperation("+");
+	interactor.addOperation(op);
 }
 
 void CalcWnd::backspaceButtonClicked() {
