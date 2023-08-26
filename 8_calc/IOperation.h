@@ -1,12 +1,8 @@
 #pragma once
 #include <memory>
-#include "ICalculable.h"
 
-struct IOperation : ICalculable {
+struct IOperation {
 
-	virtual int getId() const = 0;
-	virtual void addOperand(std::shared_ptr<ICalculable> op) = 0;
-	virtual void setLastOperand(std::shared_ptr<ICalculable> op) = 0;
-
-	~IOperation() override = default;
+	virtual double calculate(const double *params, size_t count) = 0;
+	virtual ~IOperation() = default;
 };

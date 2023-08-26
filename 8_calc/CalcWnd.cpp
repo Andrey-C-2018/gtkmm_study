@@ -72,7 +72,7 @@ void CalcWnd::signButtonClicked() {
 
 void CalcWnd::operationButtonClicked() {
 
-	interactor.addOperation(0);
+	interactor.addOperation("+");
 }
 
 void CalcWnd::backspaceButtonClicked() {

@@ -1,13 +1,9 @@
 #include <cassert>
 #include "Plus.h"
-#include "Operations.h"
 
-int Plus::getId() const {
+double Plus::calculate(const double *params, size_t count) {
 
-	return PLUS;
-}
-
-double Plus::calculate() {
-
-	return (left ? left->calculate() : 0.0) + (right ? right->calculate() : 0.0);
+	assert (params);
+	assert (count <= 2);
+	return (count > 0 ? params[0] : 0.0) + (count > 1 ? params[1] : 0.0);
 }

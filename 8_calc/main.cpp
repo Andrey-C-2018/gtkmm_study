@@ -1,6 +1,7 @@
 #include <iostream>
 #include <gtkmm.h>
 #include "CalcWnd.h"
+#include "OperationsFactory.h"
 
 int main(int argc, char *argv[]) {
 
@@ -25,5 +26,6 @@ int main(int argc, char *argv[]) {
 	auto r = app->run(*wnd);
 
 	delete wnd;
+	OperationsFactory::destroy();
 	return r;
 }

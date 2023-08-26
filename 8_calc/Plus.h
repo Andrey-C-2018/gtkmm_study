@@ -1,10 +1,8 @@
 #pragma once
-#include "BinaryOperation.h"
+#include "IOperation.h"
 
-class Plus : public BinaryOperation {
+class Plus : public IOperation {
 public:
-	double calculate() override;
-	int getId() const override;
-
+	double calculate(const double *params, size_t count) override;
 	~Plus() override = default;
 };

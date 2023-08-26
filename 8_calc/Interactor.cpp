@@ -34,13 +34,13 @@ const std::string &Interactor::removeLast() {
 	return curr_num;
 }
 
-void Interactor::addOperation(int id) {
+void Interactor::addOperation(const char *op_code) {
 
-	if (!curr_num.empty())
+	if (!curr_num.empty()) {
 		calc.addNumber(std::stod(curr_num));
-
-	calc.addOperation(id);
-	curr_num.clear();
+		curr_num.clear();
+	}
+	calc.addOperation(op_code);
 }
 
 std::string Interactor::calculate() {

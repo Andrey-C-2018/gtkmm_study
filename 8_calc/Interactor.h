@@ -18,7 +18,7 @@ public:
 	const std::string &addDecimalPoint();
 	const std::string &removeLast();
 
-	void addOperation(int id);
+	void addOperation(const char *op_code);
 	const std::string &toggleSign();
 	std::string calculate();
 
