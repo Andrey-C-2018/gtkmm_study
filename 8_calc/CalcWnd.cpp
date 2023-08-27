@@ -31,7 +31,7 @@ CalcWnd::CalcWnd(BaseObjectType* obj, Glib::RefPtr<Gtk::Builder> const& builder)
 					sigc::mem_fun(*this, &CalcWnd::numericButtonClicked), i));
 		setFontSize(numeric_buttons[i]->get_child());
 	}
-	signal_key_press_event().connect(sigc::mem_fun(*this, &CalcWnd::onKeyPress));
+	signal_key_press_event().connect(sigc::mem_fun(*this, &CalcWnd::onKeyPress), false);
 
 	Gtk::Button *operation_buttons[] = {plus_button, minus_button, mult_button, div_button};
 	for (size_t i = 0; i < sizeof operation_ids / sizeof(const char*); i++) {
@@ -64,12 +64,21 @@ void CalcWnd::numericButtonClicked(size_t number) {
 bool CalcWnd::onKeyPress(GdkEventKey* event) {
 
 	guint key = event->keyval;
-	if (GDK_KEY_0 <= key && key <= GDK_KEY_9)
-		output->set_text(interactor.addDigit((char)key));
 
-	if (GDK_KEY_KP_0 <= key && key <= GDK_KEY_KP_9)
-		output->set_text(interactor.addDigit((char)('0' + key - GDK_KEY_KP_0)));
+	switch (key) {
+		case GDK_KEY_KP_Add: operationButtonClicked("+"); break;
+		case GDK_KEY_KP_Subtract: operationButtonClicked("-"); break;
+		case GDK_KEY_KP_Multiply: operationButtonClicked("*"); break;
+		case GDK_KEY_KP_Divide: operationButtonClicked("/"); break;
+		case GDK_KEY_KP_Decimal: dotButtonClicked(); break;
+		case GDK_KEY_KP_Enter: eqButtonClicked(); break;
+		default:
+			if (GDK_KEY_0 <= key && key <= GDK_KEY_9)
+				output->set_text(interactor.addDigit((char)key));
 
+			if (GDK_KEY_KP_0 <= key && key <= GDK_KEY_KP_9)
+				output->set_text(interactor.addDigit((char) ('0' + key - GDK_KEY_KP_0)));
+	}
 	return true;
 }
 

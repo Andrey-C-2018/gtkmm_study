@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(calc VERSION 0.7 LANGUAGES CXX)
+project(calc VERSION 0.8 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()

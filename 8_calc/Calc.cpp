@@ -26,7 +26,7 @@ mpf_class Calc::calculate() {
 
 	if (!op) return params[0];
 	if (count <= 1)
-		params[1] = std::move(params[0]);
+		params[1] = params[0];
 
 	params[0] = op->calculate(params, count);
 	calculated = true;
