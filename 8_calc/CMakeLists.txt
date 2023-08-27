@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(calc VERSION 0.6 LANGUAGES CXX)
+project(calc VERSION 0.7 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -64,5 +64,5 @@ add_dependencies(${PROJECT_NAME} calc-resource)
 
 include_directories(${GTKMM3_INCLUDE_DIRS})
 include_directories(${GMP_INCLUDE_DIRS})
-target_link_libraries(calc ${GTKMM3_LIBRARIES} ${GMP_LIBRARIES})
+target_link_libraries(calc ${GTKMM3_LIBRARIES} ${GMP_LIBRARIES} gmpxx)
 add_definitions(${GTKMM3_CFLAGS_OTHER})

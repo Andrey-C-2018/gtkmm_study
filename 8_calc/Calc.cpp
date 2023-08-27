@@ -5,10 +5,10 @@
 
 Calc::Calc() : op(nullptr), count(0), calculated(false) { }
 
-void Calc::addNumber(double num) {
+void Calc::addNumber(mpf_class num) {
 
 	assert (count < MAX_PARAMS_COUNT);
-	params[count++] = num;
+	params[count++] = std::move(num);
 }
 
 void Calc::addOperation(const char *op_code) {
@@ -22,11 +22,11 @@ void Calc::addOperation(const char *op_code) {
 	count = 1;
 }
 
-double Calc::calculate() {
+mpf_class Calc::calculate() {
 
 	if (!op) return params[0];
 	if (count <= 1)
-		params[1] = params[0];
+		params[1] = std::move(params[0]);
 
 	params[0] = op->calculate(params, count);
 	calculated = true;

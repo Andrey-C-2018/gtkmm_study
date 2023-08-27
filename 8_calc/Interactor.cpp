@@ -1,4 +1,6 @@
 #include <cassert>
+#include <iomanip>
+#include <gmpxx.h>
 #include "Interactor.h"
 
 const std::string zero("0");
@@ -37,7 +39,7 @@ const std::string &Interactor::removeLast() {
 void Interactor::addOperation(const char *op_code) {
 
 	if (!curr_num.empty()) {
-		calc.addNumber(std::stod(curr_num));
+		calc.addNumber(mpf_class(curr_num.c_str()));
 		curr_num.clear();
 	}
 	calc.addOperation(op_code);
@@ -46,10 +48,14 @@ void Interactor::addOperation(const char *op_code) {
 std::string Interactor::calculate() {
 
 	if (!curr_num.empty())
-		calc.addNumber(std::stod(curr_num));
+		calc.addNumber(mpf_class(curr_num.c_str()));
 
 	curr_num.clear();
-	return std::to_string(calc.calculate());
+	result_buffer.str("");
+	result_buffer.clear();
+	mpf_class r = calc.calculate();
+	result_buffer << std::setprecision(DEF_PRECISION) << r;
+	return result_buffer.str();
 }
 
 const std::string &Interactor::toggleSign() {

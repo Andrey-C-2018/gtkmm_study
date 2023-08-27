@@ -256,7 +256,7 @@
           <object class="GtkEntry" id="output">
             <property name="height-request">40</property>
             <property name="visible">True</property>
-            <property name="can-focus">True</property>
+            <property name="can-focus">False</property>
             <property name="editable">False</property>
           </object>
           <packing>

@@ -20,6 +20,7 @@ class CalcWnd : public Gtk::Window {
 
 protected:
 	void numericButtonClicked(size_t number);
+	bool onKeyPress(GdkEventKey* event);
 	void operationButtonClicked(const char *op);
 	void dotButtonClicked();
 	void signButtonClicked();

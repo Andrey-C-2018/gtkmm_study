@@ -2,28 +2,28 @@
 #include <stdexcept>
 #include "BasicOperations.h"
 
-double Plus::calculate(const double *params, size_t count) {
+mpf_class Plus::calculate(const mpf_class *params, size_t count) {
 
 	assert (params);
 	assert (count <= 2);
 	return (count > 0 ? params[0] : 0.0) + (count > 1 ? params[1] : 0.0);
 }
 
-double Minus::calculate(const double *params, size_t count) {
+mpf_class Minus::calculate(const mpf_class *params, size_t count) {
 
 	assert (params);
 	assert (count <= 2);
 	return (count > 0 ? params[0] : 0.0) - (count > 1 ? params[1] : 0.0);
 }
 
-double Mult::calculate(const double *params, size_t count) {
+mpf_class Mult::calculate(const mpf_class *params, size_t count) {
 
 	assert (params);
 	assert (count <= 2);
 	return (count > 0 ? params[0] : 0.0) * (count > 1 ? params[1] : 1.0);
 }
 
-double Div::calculate(const double *params, size_t count) {
+mpf_class Div::calculate(const mpf_class *params, size_t count) {
 
 	assert (params);
 	if (count < 2 || params[1] == 0.0)
