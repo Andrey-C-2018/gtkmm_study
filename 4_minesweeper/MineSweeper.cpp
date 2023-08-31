@@ -12,9 +12,9 @@ constexpr size_t DEF_MINES_COUNT = 8;
 
 MineSweeper::MineSweeper(INotifier *notifier_) : \
 		INITIAL(100, 100, 100), \
-		OPENED(0, 0xff, 0), \
-		MINED(0xff, 0, 0), \
-		MARKED(0xff, 0xff, 0), \
+		OPENED(Color::GREEN), \
+		MINED(Color::RED), \
+		MARKED(Color::YELLOW), \
 		cols_count(DEF_COLS_COUNT), \
 		rows_count(DEF_ROWS_COUNT), \
 		mines_count(DEF_MINES_COUNT), \

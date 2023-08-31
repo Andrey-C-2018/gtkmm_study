@@ -9,5 +9,5 @@ struct IGameScreen {
 	virtual void redraw() = 0;
 	virtual void reset(Color color) = 0;
 
-	virtual ~IGameScreen() { }
+	virtual ~IGameScreen() = default;
 };

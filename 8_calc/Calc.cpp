@@ -28,6 +28,7 @@ mpf_class Calc::calculate() {
 	if (count <= 1)
 		params[1] = params[0];
 
+	// TODO: use += instead of +
 	params[0] = op->calculate(params, count);
 	calculated = true;
 

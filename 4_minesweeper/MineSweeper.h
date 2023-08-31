@@ -52,7 +52,7 @@ public:
 	void reset();
 	void reset(size_t cols_count, size_t rows_count, size_t mines_count);
 
-	virtual ~MineSweeper();
+	~MineSweeper() override;
 };
 
 //*************************************************
