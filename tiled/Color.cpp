@@ -1,12 +1,13 @@
-#include <cstddef>
 #include "Color.h"
 
+const Color Color::BLACK(0, 0, 0);
 const Color Color::RED(0xff, 0, 0);
 const Color Color::ORANGE(0xff, 0x9a, 0x00);
 const Color Color::YELLOW(0xff, 0xff, 0x00);
 const Color Color::GREEN(0x00, 0xff, 0x00);
 const Color Color::BLUE(0x00, 0x00, 0xff);
 const Color Color::VIOLET(0x7f, 0x00, 0xff);
+const Color Color::WHITE(0xff, 0xff, 0xff);
 
 Color::Color(unsigned char red_, unsigned char green_, unsigned char blue_) : \
 				red(red_), green(green_), blue(blue_) {}

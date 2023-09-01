@@ -2,6 +2,6 @@
 #include <istream>
 
 struct ISerializable {
-    virtual void serialize(std::istream &in) = 0;
+    virtual void deserialize(std::istream &in) = 0;
     virtual ~ISerializable() = default;
 };

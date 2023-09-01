@@ -2,9 +2,8 @@
 #include <vector>
 #include <tiled/Color.h>
 #include "ISerializable.h"
-#include "IDrawable.h"
 
-class GameObject : public ISerializable, public IDrawable {
+class GameObject : public ISerializable {
     std::vector<std::vector<Color>> data;
     size_t x, y;
 
@@ -16,9 +15,9 @@ public:
     GameObject &operator=(const GameObject &obj) = default;
     GameObject &operator=(GameObject &&obj) = default;
 
-    void serialize(std::istream &in) override;
-    void draw(IGameScreen &screen) override;
-    void setPosition(int x, int y);
+    void deserialize(std::istream &in) override;
+    void draw(IGameScreen &screen);
+    void setPosition(size_t x, size_t y);
 
     inline size_t getWidth() const;
     inline size_t getHeight() const;
@@ -36,5 +35,5 @@ size_t GameObject::getWidth() const {
 
 size_t GameObject::getHeight() const {
 
-    return data[0].size();
+    return data.size();
 }

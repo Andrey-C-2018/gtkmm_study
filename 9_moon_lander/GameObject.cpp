@@ -1,23 +1,24 @@
 #include <cassert>
+#include <cstring>
 #include <tiled/IGameScreen.h>
 #include "GameObject.h"
 
 GameObject::GameObject() : x(0), y(0) { }
 
-void GameObject::serialize(std::istream &in) {
+void GameObject::deserialize(std::istream &in) {
 
-    std::string buffer, token;
+    std::string buffer;
     while (!in.eof()) {
         std::getline(in, buffer);
 
         std::vector<Color> row;
-        size_t prev = 0, p = buffer.find(',');
-        while (prev != buffer.size() && p != std::string::npos) {
-            char *end = nullptr;
-            auto color_index = std::strtoul(buffer.c_str() + prev, &end, 10);
+        const char *p = strchr(buffer.c_str(), ',');
+        while (p && *p != '\0') {
+            p++;
+            auto color_index = atoi(p);
             Color c((size_t)color_index);
             row.emplace_back(c);
-            prev = p + 1;
+            p = strchr(p, ',');
         }
 
         if (!row.empty())
@@ -27,17 +28,15 @@ void GameObject::serialize(std::istream &in) {
 
 void GameObject::draw(IGameScreen &screen) {
 
-    for (size_t i = y; i < data.size(); i++)
-        for (size_t j = x; j < data[0].size(); j++)
-            screen.setCellColor(j, i, data[i][j]);
+    for (size_t i = 0; i < data.size(); i++)
+        for (size_t j = 0; j < data[0].size(); j++)
+            screen.setCellColor(j + x, i + y, data[i][j]);
 }
 
-void GameObject::setPosition(int x_, int y_) {
+void GameObject::setPosition(size_t x_, size_t y_) {
 
-    assert (x >= 0);
-    assert (y >= 0);
-    x = x;
-    y = y;
+    x = x_;
+    y = y_;
 }
 
 bool GameObject::intersectsWith(const GameObject &obj) const {

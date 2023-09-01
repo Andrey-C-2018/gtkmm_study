@@ -4,8 +4,10 @@
 #include "MoonLander.h"
 
 class MainWnd : public Gtk::Window {
-    std::shared_ptr<MoonLander> moon_lander;
     GameField field;
+    std::shared_ptr<MoonLander> moon_lander;
+
+    void setResizeConstraints();
 
 public:
 	MainWnd();

@@ -3,7 +3,10 @@
 #include "GameObject.h"
 
 class MoonLander : public IEventsHandler {
-    GameObject moon, rocket, platform;
+    static constexpr float height_ratio = 1.8F;
+    GameObject landscape, platform;
+
+    static void loadGameObjData(GameObject &obj, const char *resource_name);
 
 public:
     explicit MoonLander();
@@ -18,9 +21,6 @@ public:
     void onKeyPress(char ch) override;
     void onKeyReleased(char ch) override { }
     void onTimer();
-
-    void reset();
-    void reset(size_t cols_count, size_t rows_count, size_t mines_count);
 
     ~MoonLander() override;
 };
