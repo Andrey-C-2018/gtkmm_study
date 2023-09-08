@@ -34,7 +34,7 @@ add_executable(moonlander main.cpp
 				MoonLander.cpp MoonLander.h
 				ISerializable.h
 				GameObject.cpp GameObject.h
-				${CMAKE_CURRENT_BINARY_DIR}/resources.cpp IReader.h InputStreamReader.cpp InputStreamReader.h)
+				${CMAKE_CURRENT_BINARY_DIR}/resources.cpp IReader.h InputStreamReader.cpp InputStreamReader.h Rocket.cpp Rocket.h Point.h)
 set_target_properties(moonlander PROPERTIES C_STANDARD 14 C_STANDARD_REQUIRED ON)
 set_source_files_properties(
 		${CMAKE_CURRENT_BINARY_DIR}/resources.cpp

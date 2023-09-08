@@ -1,6 +1,4 @@
-#include <cassert>
 #include <cstring>
-#include <cstdlib>
 #include <tiled/IGameScreen.h>
 #include "GameObject.h"
 #include "IReader.h"
@@ -14,13 +12,14 @@ void GameObject::deserialize(IReader &in) {
 
         std::vector<Color> row;
         const char *p = strchr(line, ',');
-        while (p && *p != '\0') {
-            p++;
-            auto color_index = atoi(p);
-            Color c((size_t)color_index);
-            row.emplace_back(c);
-            p = strchr(p, ',');
+        const char *prev = line;
+        while (p) {
+            addColorToRow(prev, row);
+            prev = p + 1;
+            p = strchr(prev, ',');
         }
+        if (*line != '\0')
+            addColorToRow(prev, row);
 
         if (!row.empty())
             data.emplace_back(row);

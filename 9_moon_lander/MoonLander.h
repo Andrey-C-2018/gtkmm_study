@@ -1,12 +1,11 @@
 #pragma once
 #include <tiled/IEventsHandler.h>
-#include "GameObject.h"
+#include "Rocket.h"
 
 class MoonLander : public IEventsHandler {
     static constexpr float height_ratio = 1.8F;
     GameObject landscape, platform;
-
-    static void loadGameObjData(GameObject &obj, const char *resource_name);
+    Rocket rocket;
 
 public:
     explicit MoonLander();
