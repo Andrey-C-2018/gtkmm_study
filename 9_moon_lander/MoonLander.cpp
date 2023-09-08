@@ -1,8 +1,10 @@
 #include <fstream>
 #include <iostream>
 #include <cassert>
+#include <giomm/file.h>
 #include <tiled/IGameScreen.h>
 #include "MoonLander.h"
+#include "InputStreamReader.h"
 
 MoonLander::MoonLander() {
 
@@ -31,14 +33,14 @@ void MoonLander::onKeyPress(char ch) {
 void MoonLander::loadGameObjData(GameObject &obj, const char *resource_name) {
 
     assert (resource_name);
-    std::ifstream in(resource_name, std::ios::in);
-    if (!in.is_open()) {
-        std::cerr << "the resource was not found: " << resource_name << std::endl;
-        return;
-    }
+    std::string res_path = "resource:///res/";
+    res_path += resource_name;
+    auto res = Gio::File::create_for_uri(res_path);
+
+    auto stream = res->read();
+    auto in = InputStreamReader(stream);
 
     obj.deserialize(in);
-    in.close();
 }
 
 void MoonLander::onTimer() {

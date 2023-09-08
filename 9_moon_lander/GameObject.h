@@ -15,13 +15,13 @@ public:
     GameObject &operator=(const GameObject &obj) = default;
     GameObject &operator=(GameObject &&obj) = default;
 
-    void deserialize(std::istream &in) override;
+    void deserialize(IReader &in) override;
     void draw(IGameScreen &screen);
     void setPosition(size_t x, size_t y);
 
     inline size_t getWidth() const;
     inline size_t getHeight() const;
-    bool intersectsWith(const GameObject &obj) const;
+    bool intersectsWithRect(const GameObject &obj) const;
 
     ~GameObject() override = default;
 };

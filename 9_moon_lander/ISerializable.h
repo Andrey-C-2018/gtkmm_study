@@ -1,7 +1,8 @@
 #pragma once
-#include <istream>
+
+struct IReader;
 
 struct ISerializable {
-    virtual void deserialize(std::istream &in) = 0;
+    virtual void deserialize(IReader &in) = 0;
     virtual ~ISerializable() = default;
 };

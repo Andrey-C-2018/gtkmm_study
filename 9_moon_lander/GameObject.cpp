@@ -1,18 +1,19 @@
 #include <cassert>
 #include <cstring>
+#include <cstdlib>
 #include <tiled/IGameScreen.h>
 #include "GameObject.h"
+#include "IReader.h"
 
 GameObject::GameObject() : x(0), y(0) { }
 
-void GameObject::deserialize(std::istream &in) {
+void GameObject::deserialize(IReader &in) {
 
-    std::string buffer;
-    while (!in.eof()) {
-        std::getline(in, buffer);
+    while (in.ready()) {
+        const char *line = in.readLine();
 
         std::vector<Color> row;
-        const char *p = strchr(buffer.c_str(), ',');
+        const char *p = strchr(line, ',');
         while (p && *p != '\0') {
             p++;
             auto color_index = atoi(p);
@@ -39,7 +40,7 @@ void GameObject::setPosition(size_t x_, size_t y_) {
     y = y_;
 }
 
-bool GameObject::intersectsWith(const GameObject &obj) const {
+bool GameObject::intersectsWithRect(const GameObject &obj) const {
 
     if (data.empty() || obj.data.empty()) return false;
     auto x2 = x + data[0].size();
