@@ -114,4 +114,4 @@ void GameScreen::redraw() {
 	parent->queue_draw();
 }
 
-GameScreen::~GameScreen() { }
+GameScreen::~GameScreen() = default;

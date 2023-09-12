@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(moonlander VERSION 0.3 LANGUAGES CXX)
+project(moonlander VERSION 0.4 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE Release)
 endif()

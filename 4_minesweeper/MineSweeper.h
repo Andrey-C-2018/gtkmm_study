@@ -48,8 +48,9 @@ public:
 	void onMouseRButtonUp(size_t col, size_t row) override { }
 	void onKeyPress(char ch) override { }
 	void onKeyReleased(char ch) override { }
+    void onTimer() override { }
 
-	void reset();
+    void reset();
 	void reset(size_t cols_count, size_t rows_count, size_t mines_count);
 
 	~MineSweeper() override;

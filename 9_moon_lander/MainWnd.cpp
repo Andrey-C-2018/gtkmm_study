@@ -7,6 +7,7 @@ MainWnd::MainWnd() : moon_lander(std::make_shared<MoonLander>()) {
     setResizeConstraints();
 
     field.init(moon_lander);
+    field.enableTimer();
     MainWnd::add(field);
     field.show();
 }

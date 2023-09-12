@@ -1,4 +1,5 @@
 #include <cassert>
+#include <glibmm/main.h>
 #include "GameField.h"
 
 GameField::GameField() : game_screen(this) {
@@ -19,6 +20,12 @@ void GameField::init(EvtHandlerPtr evt_handler_) {
 	assert(!evt_handler);
 	evt_handler = evt_handler_;
 	evt_handler->onInit(game_screen);
+}
+
+void GameField::enableTimer() {
+
+    Glib::signal_timeout().connect(sigc::bind(sigc::mem_fun(*this,
+                                         &GameField::on_timeout), 0), 50);
 }
 
 bool GameField::on_button_press_event(GdkEventButton *event) {
@@ -77,4 +84,10 @@ bool GameField::on_key_release_event(GdkEventKey *event) {
 	return true;
 }
 
-GameField::~GameField() { }
+bool GameField::on_timeout(int timer_number) {
+
+    evt_handler->onTimer();
+    return true;
+}
+
+GameField::~GameField() = default;
