@@ -15,6 +15,7 @@ class MoonLander : public IEventsHandler {
     ITimerManager *timer_manager;
 
     void onKeyPressOrRel(char ch, bool pressed);
+    void stopRocketOnPlatform();
 
 public:
     explicit MoonLander(ITimerManager *timer_manager);

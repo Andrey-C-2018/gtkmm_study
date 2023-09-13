@@ -37,10 +37,9 @@ void MoonLander::onInit(IGameScreen &screen_) {
 
     landscape.setPosition(0, height - landscape.getHeight());
     platform.setPosition((landscape.getWidth() - platform.getWidth() - 4) / 2, height - 1);
-    rocket.setPosition((landscape.getWidth() - rocket.getWidth()) / 2, 0);
+    rocket.setPosition((2 * landscape.getWidth()) / 10, 0);
 
     landscape.draw(*screen);
-    platform.draw(*screen);
     rocket.draw(*screen);
 
     timer_manager->enableTimer();
@@ -72,12 +71,14 @@ void MoonLander::onTimer() {
     if (rocket.intersectsWithRect(platform)) {
         if (!rocket.isStopped())
             rocket.crash();
+
+        stopRocketOnPlatform();
         timer_manager->disableTimer();
+
     } else {
-        auto coords = rocket.getPosition();
-        if (coords.y >= height - rocket.getHeight() - platform.getHeight()) {
+        if (rocket.intersectsWith(landscape)) {
+            rocket.crash();
             timer_manager->disableTimer();
-            rocket.setPosition(coords.x, height - rocket.getHeight() - platform.getHeight());
         }
     }
 
@@ -85,6 +86,15 @@ void MoonLander::onTimer() {
     landscape.draw(*screen);
     rocket.draw(*screen);
     screen->redraw();
+}
+
+void MoonLander::stopRocketOnPlatform() {
+
+    auto coords = rocket.getPosition();
+    if (coords.y >= height - rocket.getHeight() - platform.getHeight()) {
+        timer_manager->disableTimer();
+        rocket.setPosition(coords.x, height - rocket.getHeight() - platform.getHeight());
+    }
 }
 
 MoonLander::~MoonLander() = default;

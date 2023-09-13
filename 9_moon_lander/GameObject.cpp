@@ -60,3 +60,23 @@ bool GameObject::intersectsWithRect(const GameObject &obj) const {
 
     return v1 || v2 || v3 || v4 || V1 || V2 || V3 || V4;
 }
+
+bool GameObject::intersectsWith(const GameObject &obj) const {
+
+    const size_t width = getWidth();
+    const size_t height = getHeight();
+    for (size_t col = 0; col < width; col++) {
+        for (size_t row = 0; row < height; row++) {
+            size_t obj_col = col + x - obj.x;
+            size_t obj_row = row + y - obj.y;
+
+            if (col + x >= obj.x && obj_col < obj.getWidth() && \
+                    row + y >= obj.y && obj_row < obj.getHeight() && \
+                        data[row][col] != TRANSPARENT && \
+                            obj.data[obj_row][obj_col] != TRANSPARENT) {
+                return true;
+            }
+        }
+    }
+    return false;
+}

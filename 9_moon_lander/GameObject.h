@@ -36,6 +36,7 @@ public:
     inline size_t getWidth() const;
     inline size_t getHeight() const;
     bool intersectsWithRect(const GameObject &obj) const;
+    bool intersectsWith(const GameObject &obj) const;
 
     ~GameObject() override = default;
 };
