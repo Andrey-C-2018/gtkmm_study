@@ -8,6 +8,7 @@ typedef std::shared_ptr<IEventsHandler> EvtHandlerPtr;
 class GameField : public Gtk::DrawingArea {
 	GameScreen game_screen;
 	EvtHandlerPtr evt_handler;
+    sigc::connection timer_conn;
 
 protected:
 	bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
@@ -27,6 +28,7 @@ public:
 
 	void init(EvtHandlerPtr evt_handler);
     void enableTimer();
+    void disableTimer();
 
-	virtual ~GameField();
+	~GameField() override;
 };

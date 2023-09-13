@@ -4,11 +4,14 @@
 #include <tiled/IGameScreen.h>
 #include "MoonLander.h"
 #include "InputStreamReader.h"
+#include "ITimerManager.h"
 
-MoonLander::MoonLander() : height(0), rocket(&landscape), \
+MoonLander::MoonLander(ITimerManager *timer_manager_) : \
+                            height(0), rocket(&landscape), \
                             up_pressed(false), left_pressed(false), right_pressed(false), \
-                            screen(nullptr) {
+                            screen(nullptr), timer_manager(timer_manager_) {
 
+    assert (timer_manager);
     const char *resources[] = {"landscape.csv", "platform.csv", "rocket.csv"};
     GameObject *objects[] = {&landscape, &platform, &rocket};
     assert (sizeof objects / sizeof(objects[0]) == sizeof resources / sizeof(const char *));
@@ -39,26 +42,28 @@ void MoonLander::onInit(IGameScreen &screen_) {
     landscape.draw(*screen);
     platform.draw(*screen);
     rocket.draw(*screen);
+
+    timer_manager->enableTimer();
+}
+
+void MoonLander::onKeyPressOrRel(char ch, bool pressed) {
+
+    switch (ch) {
+        case 's': up_pressed = pressed; break;
+        case 'a': left_pressed = pressed; break;
+        case 'd': right_pressed = pressed;
+        default: break;
+    }
 }
 
 void MoonLander::onKeyPress(char ch) {
 
-    switch (ch) {
-        case 's': up_pressed = true; break;
-        case 'a': left_pressed = true; break;
-        case 'd': right_pressed = true;
-        default: break;
-    }
+    onKeyPressOrRel(ch, true);
 }
 
 void MoonLander::onKeyReleased(char ch) {
 
-    switch (ch) {
-        case 's': up_pressed = false; break;
-        case 'a': left_pressed = false; break;
-        case 'd': right_pressed = false;
-        default: break;
-    }
+    onKeyPressOrRel(ch, false);
 }
 
 void MoonLander::onTimer() {
@@ -66,6 +71,7 @@ void MoonLander::onTimer() {
     rocket.move(up_pressed, left_pressed, right_pressed);
     auto coords = rocket.getPosition();
     if (coords.y >= height - rocket.getHeight() - platform.getHeight()) {
+        timer_manager->disableTimer();
         rocket.setPosition(coords.x, height - rocket.getHeight() - platform.getHeight());
     }
 
@@ -74,5 +80,7 @@ void MoonLander::onTimer() {
     rocket.draw(*screen);
     screen->redraw();
 }
+
+
 
 MoonLander::~MoonLander() = default;

@@ -9,11 +9,6 @@ GameField::GameField() : game_screen(this) {
 	set_can_focus(true);
 }
 
-bool GameField::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
-
-	return game_screen.draw(cr);
-}
-
 void GameField::init(EvtHandlerPtr evt_handler_) {
 
 	assert(evt_handler_);
@@ -24,8 +19,21 @@ void GameField::init(EvtHandlerPtr evt_handler_) {
 
 void GameField::enableTimer() {
 
-    Glib::signal_timeout().connect(sigc::bind(sigc::mem_fun(*this,
+    if (!timer_conn.connected())
+        timer_conn = Glib::signal_timeout().connect(
+                                sigc::bind(sigc::mem_fun(*this,
                                          &GameField::on_timeout), 0), 50);
+}
+
+void GameField::disableTimer() {
+
+    if (timer_conn.connected())
+        timer_conn.disconnect();
+}
+
+bool GameField::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
+
+    return game_screen.draw(cr);
 }
 
 bool GameField::on_button_press_event(GdkEventButton *event) {

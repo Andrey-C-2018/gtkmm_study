@@ -1,6 +1,8 @@
 #include "MainWnd.h"
+#include "ITimerManager.h"
 
-MainWnd::MainWnd() : moon_lander(std::make_shared<MoonLander>()) {
+MainWnd::MainWnd() : timer_manager(&field), \
+                        moon_lander(std::make_shared<MoonLander>(&timer_manager)) {
 
     set_border_width(10);
     set_title("Moonlander");
