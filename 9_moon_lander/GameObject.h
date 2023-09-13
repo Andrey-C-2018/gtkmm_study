@@ -14,6 +14,12 @@ class GameObject : public ISerializable {
 
     static inline void addColorToRow(const char *p_str, std::vector<Color> &row);
 
+protected:
+    static constexpr const Color &TRANSPARENT = Color::BLACK;
+
+    inline const Color &getPixel(size_t col, size_t row) const;
+    inline void setPixel(size_t col, size_t row, Color color);
+
 public:
     GameObject();
 
@@ -25,7 +31,7 @@ public:
     void deserialize(IReader &in) override;
     void draw(IGameScreen &screen);
     inline Point getPosition() const;
-    void setPosition(size_t x, size_t y);
+    virtual void setPosition(size_t x, size_t y);
 
     inline size_t getWidth() const;
     inline size_t getHeight() const;
@@ -59,4 +65,14 @@ void GameObject::addColorToRow(const char *p_str, std::vector<Color> &row) {
     auto color_index = atoi(p_str);
     Color c((size_t)color_index);
     row.emplace_back(c);
+}
+
+const Color &GameObject::getPixel(size_t col, size_t row) const {
+
+    return data[row][col];
+}
+
+void GameObject::setPixel(size_t col, size_t row, Color color) {
+
+    data[row][col] = color;
 }

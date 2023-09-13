@@ -1,8 +1,19 @@
 #include "Rocket.h"
 
 Rocket::Rocket(const GameObject *landscape_) : landscape(landscape_),
+                                                X(0.0), Y(0.0), \
                                                 speed_x(0.0), speed_y(1.0), accel(0.05) {
     assert (landscape);
+    auto coord = getPosition();
+    X = (double)coord.x;
+    Y = (double)coord.y;
+}
+
+void Rocket::setPosition(size_t x, size_t y) {
+
+    X = (double)x;
+    Y = (double)y;
+    GameObject::setPosition(x, y);
 }
 
 void Rocket::move(bool throttle, bool left, bool right) {
@@ -19,28 +30,37 @@ void Rocket::move(bool throttle, bool left, bool right) {
 
 void Rocket::applySpeedChanges() {
 
-    auto coord = getPosition();
-    double x = (double)coord.x + speed_x;
-    double y = (double)coord.y + speed_y;
+    X += speed_x;
+    Y += speed_y;
     auto width = (double)getWidth();
     auto landscape_width = (double)landscape->getWidth();
 
-    if (x < 0) {
-        x = 0;
+    if (X < 0) {
+        X = 0;
         speed_x = 0;
     }
-    if (x + width > landscape_width) {
-        x = landscape_width - width;
+    if (X + width > landscape_width) {
+        X = landscape_width - width;
         speed_x = 0;
     }
-    if (y < 0) {
-        y = 0;
+    if (Y < 0) {
+        Y = 0;
         speed_y = 0;
     }
-    setPosition((size_t)x, (size_t)y);
+    GameObject::setPosition((size_t)X, (size_t)Y);
 }
 
 bool Rocket::isStopped() const {
 
     return speed_y < 10 * accel;
+}
+
+void Rocket::crash() {
+
+    for (size_t i = 0; i < getWidth(); i++)
+        for (size_t j = 0; j < getHeight(); j++) {
+            Color c = getPixel(i, j);
+            if (c != TRANSPARENT)
+                setPixel(i, j, Color::RED);
+        }
 }

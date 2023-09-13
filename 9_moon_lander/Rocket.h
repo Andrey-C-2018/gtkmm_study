@@ -3,7 +3,7 @@
 
 class Rocket : public GameObject {
     const GameObject *landscape;
-    double speed_x, speed_y, accel;
+    double X, Y, speed_x, speed_y, accel;
 
     void applySpeedChanges();
 
@@ -15,8 +15,10 @@ public:
     Rocket &operator=(const Rocket &obj) = delete;
     Rocket &operator=(Rocket &&obj) = default;
 
+    void setPosition(size_t x, size_t y) override;
     void move(bool throttle, bool left, bool right);
     bool isStopped() const;
+    void crash();
 
     ~Rocket() override = default;
 };

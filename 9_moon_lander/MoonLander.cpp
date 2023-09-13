@@ -69,10 +69,16 @@ void MoonLander::onKeyReleased(char ch) {
 void MoonLander::onTimer() {
 
     rocket.move(up_pressed, left_pressed, right_pressed);
-    auto coords = rocket.getPosition();
-    if (coords.y >= height - rocket.getHeight() - platform.getHeight()) {
+    if (rocket.intersectsWithRect(platform)) {
+        if (!rocket.isStopped())
+            rocket.crash();
         timer_manager->disableTimer();
-        rocket.setPosition(coords.x, height - rocket.getHeight() - platform.getHeight());
+    } else {
+        auto coords = rocket.getPosition();
+        if (coords.y >= height - rocket.getHeight() - platform.getHeight()) {
+            timer_manager->disableTimer();
+            rocket.setPosition(coords.x, height - rocket.getHeight() - platform.getHeight());
+        }
     }
 
     screen->reset(Color::BLACK);
@@ -80,7 +86,5 @@ void MoonLander::onTimer() {
     rocket.draw(*screen);
     screen->redraw();
 }
-
-
 
 MoonLander::~MoonLander() = default;

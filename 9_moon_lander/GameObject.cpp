@@ -30,7 +30,8 @@ void GameObject::draw(IGameScreen &screen) {
 
     for (size_t i = 0; i < data.size(); i++)
         for (size_t j = 0; j < data[0].size(); j++)
-            screen.setCellColor(j + x, i + y, data[i][j]);
+            if (data[i][j] != TRANSPARENT)
+                screen.setCellColor(j + x, i + y, data[i][j]);
 }
 
 void GameObject::setPosition(size_t x_, size_t y_) {
